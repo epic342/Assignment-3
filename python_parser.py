@@ -12,8 +12,8 @@ class ClassNode:
     def add_attribute(self, attribute_name):
         self.attributes.append(AttributeNode(attribute_name))
 
-    def add_function(self, function_name):
-        self.functions.append(FunctionNode(function_name))
+    def add_function(self, function_name, list_of_parameters):
+        self.functions.append(FunctionNode(function_name, list_of_parameters))
 
 
 class AttributeNode:
@@ -22,8 +22,9 @@ class AttributeNode:
 
 
 class FunctionNode:
-    def __init__(self, name):
+    def __init__(self, name, list_of_parameters):
         self.name = name
+        self.parameters = list_of_parameters
 
 
 class FileProcessor:
@@ -52,9 +53,6 @@ class FileProcessor:
     def process_module(self, module):
         """Find any classes that exists within this module"""
         print("Processing module " + str(module))
-
-        # print(module.Plant.__dict__) - lets me see global variables, but not function variables
-        # print(module.Plant.__init__)
 
         for (name, something) in inspect.getmembers(module):
             if inspect.isclass(something):
@@ -91,12 +89,9 @@ class FileProcessor:
 
     def process_function(self, some_function, class_node):
         """Functions are added to the class node with just their title"""
-        print("Processing function: " + some_function.__name__)
+        print("Processing function: " + some_function.__name__, " - The parameters are:", inspect.getargspec(some_function)[0])
 
-        #print(type(some_function))
-        # print("The parameters for this function are: ", inspect.getargspec(some_function))
-
-        class_node.add_function(some_function)
+        class_node.add_function(some_function, inspect.getargspec(some_function)[0])
 
     def process_attribute(self, attribute_name, class_node):
         """Attributes are added to the class node with just their name"""
