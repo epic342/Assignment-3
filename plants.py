@@ -1,6 +1,7 @@
 class Plant:
-    def __init__(self):
-        pass
+	
+    def __init__(self, h=10):
+        self.plant_height = h
 
     def grow_plant(self):
         pass
