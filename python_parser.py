@@ -30,6 +30,9 @@ class FunctionNode:
         self.name = name
         self.parameters = list_of_parameters
 
+    def get_name(self):
+        return self.name
+
 
 class FileProcessor:
 
@@ -77,34 +80,42 @@ class FileProcessor:
         if not module_name in self.modules:
             self.modules[module_name] = list()
 
-        # strip bases
         super_classes = []
         super_classes_names = []
 
-        for x in some_class.__bases__:
-            if x.__name__ != 'object':
-                if x.__name__ not in super_classes_names:
-                    super_classes.append(x)
-                    super_classes_names.append(x.__name__)
+        # Only creates class_nodes that have unique name, stops duplicate class_nodes
+        # Strips any random objects, only leaves proper class names
+        for class_object in some_class.__bases__:
+            if class_object.__name__ != 'object':
+                if class_object.__name__ not in super_classes_names:
+                    super_classes.append(class_object)
+                    super_classes_names.append(class_object.__name__)
         
         # create class node and append to current module
         class_node = ClassNode(name, super_classes)
         self.modules[module_name].append(class_node)
 
-        # create list of attributes in class
-        for (name, something) in inspect.getmembers(some_class()):
-            if not callable(something):
-                self.process_attribute(name, class_node)
-
         # create list of functions in class
         for (name, something) in inspect.getmembers(some_class):
             if inspect.ismethod(something) or inspect.isfunction(something):
-                self.process_function(something, class_node)
+                # get the class from the functions element
+                function_class = something.__qualname__.split('.')[0]
+
+                # only add function if the current class is the same as the selected functions class
+                if some_class.__name__ == function_class:
+
+                    # create list of attributes in class with constructor
+                    if something.__name__ == "__init__":
+                        for (attr, something_attr) in inspect.getmembers(some_class()):
+                            if not callable(something_attr):
+                                self.process_attribute(attr, class_node)
+
+                    self.process_function(something, class_node)
 
     def process_function(self, some_function, class_node):
         """Functions are added to the class node with just their title"""
         #print("Processing function: " + some_function.__name__, " - The parameters are:", inspect.getargspec(some_function)[0])
-        class_node.add_function(some_function, inspect.getfullargspec(some_function)[0])
+        class_node.add_function(some_function.__name__, inspect.getfullargspec(some_function)[0])
 
     def process_attribute(self, attribute_name, class_node):
         """Attributes are added to the class node with just their name"""
@@ -149,6 +160,19 @@ class FileProcessor:
 
                 # Class Title
                 out.write("label = \"{" + c.name)
+
+                out.write("|")
+
+                # Attributes Start
+                for attr in c.attributes:
+                    write_row(out, attr.name)
+                # Attributes End
+                out.write("|")
+                # Functions Start
+                for func in c.functions:
+                    write_row(out, func.name + "(" + "params" +")")
+
+                # Functions End
 
                 out.write("}\"\n")
 
