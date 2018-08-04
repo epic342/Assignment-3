@@ -103,10 +103,9 @@ class FileProcessor:
 
                 # only add function if the current class is the same as the selected functions class
                 if some_class.__name__ == function_class:
-
                     # create list of attributes in class with constructor
                     if something.__name__ == "__init__":
-                        for (attr, something_attr) in inspect.getmembers(some_class()):
+                        for (attr, something_attr) in inspect.getmembers(some_class.__new__(some_class)):
                             if not callable(something_attr):
                                 self.process_attribute(attr, class_node)
 
@@ -132,9 +131,11 @@ class FileProcessor:
         def class_name_to_dot(name):
             return name
 
+        # creates row in table with method name
         def write_row(out, method):
             out.write(method + "\l")
 
+        # styles class table and items for output
         out.write(
             """
             digraph G {
@@ -187,6 +188,7 @@ class FileProcessor:
             ]
         """)
 
+        # draws lines between class boxes
         for module in self.modules.values():
             for c in module:
                 for parent in c.super_classes:
