@@ -15,10 +15,10 @@ Orchid [
 label = "{Orchid||}"
 ]
 Plant [
-label = "{Plant|plant_height\l|__init__(self,h)\lgrow_plant(self)\l}"
+label = "{Plant||}"
 ]
 Sunflower [
-label = "{Sunflower||drop_seed(self)\l}"
+label = "{Sunflower||}"
 ]
 }
 

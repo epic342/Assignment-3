@@ -1,8 +1,9 @@
 class MakeUML:
     """Converting modules into a UML class diagram using graphviz"""
 
-    def __init__(self):
-        pass
+    def __init__(self, hide_attributes, hide_methods):
+        self.hide_attributes = hide_attributes
+        self.hide_methods = hide_methods
 
     def create_class_diagram(self, modules):
         with open('tmp/class.dot', 'w') as out:
@@ -47,13 +48,15 @@ class MakeUML:
                     out.write("|")
 
                     # Attributes Start
-                    for attr in c.attributes:
-                        write_row(out, attr.name)
+                    if not self.hide_attributes:
+                        for attr in c.attributes:
+                            write_row(out, attr.name)
                     # Attributes End
                     out.write("|")
                     # Functions Start
-                    for func in c.functions:
-                        write_row(out, func.name + "(" + func.get_parameters() +")")
+                    if not self.hide_methods:
+                        for func in c.functions:
+                            write_row(out, func.name + "(" + func.get_parameters() +")")
 
                     # Functions End
 

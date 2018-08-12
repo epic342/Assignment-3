@@ -47,16 +47,11 @@ class FileProcessor:
     def __init__(self):
         self.modules = dict()
 
-    def process_files(self, file_names = 'plants.py'):
-        # Loop through a list of files, and process each file as an individual
-        for file in file_names:
-            self.process_file(file)
-        return self.modules
-
     def process_files(self, file_names):
         # Loop through a list of files, and process each file as an individual
         for file in file_names:
             self.process_file(file)
+        return self.modules
 
     def process_file(self, file_name):
         # Import specified file_name and store as module
