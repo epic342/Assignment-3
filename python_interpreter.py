@@ -10,6 +10,7 @@ def initiate_python_parser(command_line_args):
     controller = pc.Controller(command_line_args)
     controller.run_parser(command_line_args)
 
+
 if __name__ == '__main__' :
     # USAGE: python_parser.py <filename or * for all>.py
 
