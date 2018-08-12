@@ -1,5 +1,6 @@
 import inspect
 import sys
+import os
 
 ##########################################
 # Initial helper classes to store information while the parser
@@ -55,7 +56,10 @@ class FileProcessor:
 
     def process_file(self, file_name):
         # Import specified file_name and store as module
-        module_name = file_name.replace("./", "").replace(".py", "").replace("/", ".")
+        path, file = os.path.split(file_name)
+
+        module_name = file.replace("./", "").replace(".py", "").replace("/", ".")
+
         __import__(module_name, locals(), globals())
         self.process_module(sys.modules[module_name])
 
