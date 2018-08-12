@@ -65,7 +65,7 @@ class MakeUML:
                         # Attributes Start
                         if not self.hide_attributes:
                             for attr in c.attributes:
-                                write_row(out, attr.name)
+                                write_row(out, attr.visibility + " " + attr.name)
                         # Attributes End
                         out.write("|")
                         # Functions Start

@@ -26,8 +26,8 @@ class ClassNode:
         self.functions = []
         self.super_classes = super_classes
 
-    def add_attribute(self, attribute_name):
-        self.attributes.append(AttributeNode(attribute_name))
+    def add_attribute(self, attribute_name, visibility):
+        self.attributes.append(AttributeNode(attribute_name, visibility))
 
     def add_function(self, function_name, list_of_parameters, visibility):
         self.functions.append(FunctionNode(function_name, list_of_parameters, visibility))
@@ -41,8 +41,9 @@ class AttributeNode:
     >>> AttributeNode("Attribute One").name
     'Attribute One'
     """
-    def __init__(self, name):
+    def __init__(self, name, visibility):
         self.name = name
+        self.visibility = visibility
 
 
 class FunctionNode:
@@ -150,32 +151,31 @@ class FileProcessor:
                     # create list of attributes in class with constructor
                     if something.__name__ == "__init__":
                         for key in some_class().__dict__.keys():
-                            self.process_attribute(key, class_node)
+                            self.process_attribute(key, class_node, self.get_visibility_of_string(key))
 
-                    function_name = something.__name__
-
-                    # get visibility of function (public = +, protected = #, private = -)
-
-                    visibility = "+"
-                    if function_name[:2] == "__":
-                        visibility = "-"
-                    elif function_name[0] == "_":
-                        visibility = "#"
-
-                    self.process_function(something, class_node, visibility)
+                    self.process_function(something, class_node, self.get_visibility_of_string(something.__name__))
 
     def process_function(self, some_function, class_node, visibility):
         # Functions are added to the class node with just their title
         class_node.add_function(some_function.__name__, inspect.getfullargspec(some_function)[0], visibility)
 
-    def process_attribute(self, attribute_name, class_node):
+    def process_attribute(self, attribute_name, class_node, visibility):
         # Attributes are added to the class node with just their name
         # filter out __module__, __doc__
         if attribute_name not in self.filter_out_attributes:
-            class_node.add_attribute(attribute_name)
+            class_node.add_attribute(attribute_name, visibility)
 
     def get_modules(self):
         return self.modules
+
+    def get_visibility_of_string(self, string):
+        # get visibility of function (public = +, protected = #, private = -)
+        visibility = "+"
+        if string[:2] == "__":
+            visibility = "-"
+        elif string[0] == "_":
+            visibility = "#"
+        return visibility
 
 
 if __name__ == "__main__":
