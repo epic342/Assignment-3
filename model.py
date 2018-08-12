@@ -8,7 +8,16 @@ import os
 
 
 class ClassNode:
-    """Class object containing attributes and functions"""
+    """
+    Class object containing attributes and functions
+    >>> ClassNode("Class One", []).name
+    'Class One'
+    >>> class_one = ClassNode("Class One", [])
+    >>> class_one.add_attribute("Attribute One")
+    >>> class_one.add_attribute("Attribute Two")
+    >>> len(class_one.attributes)
+    2
+    """
     def __init__(self, name, super_classes):
         self.name = name
         self.attributes = []
@@ -23,13 +32,23 @@ class ClassNode:
 
 
 class AttributeNode:
-    """Attribute object containing attribute name"""
+    """
+    Attribute object containing attribute name
+    >>> AttributeNode("Attribute One").name
+    'Attribute One'
+    """
     def __init__(self, name):
         self.name = name
 
 
 class FunctionNode:
-    """Function object containing function name and parameters"""
+    """
+    Function object containing function name and parameters
+    >>> FunctionNode("Function One", []).get_name()
+    'Function One'
+    >>> len(FunctionNode("Function One", ["Param One", "Param Two"]).parameters)
+    2
+    """
     def __init__(self, name, list_of_parameters):
         self.name = name
         self.parameters = list_of_parameters
@@ -42,17 +61,26 @@ class FunctionNode:
 
 
 class FileProcessor:
-    """Process multiple files into class objects ready to be converted into DOT"""
+    """
+    Process multiple files into class objects ready to be converted into DOT
+    Author: Braeden
+    """
     filter_out_attributes = ["__doc__", "__module__", "__dict__", "__weakref__"]
 
     def __init__(self):
         self.modules = dict()
 
     def process_files(self, file_names):
-        # Loop through a list of files, and process each file as an individual
+        """
+        Loop through a list of files, and process each file as an individual
+        >>> fp.process_files(["plants.py"])
+        1
+        >>> fp.process_files(["plants.py", "plants2.py"])
+        2
+        """
         for file in file_names:
             self.process_file(file)
-        return self.modules
+        return len(self.modules)
 
     def process_file(self, file_name):
         # Import specified file_name and store as module
@@ -130,3 +158,7 @@ class FileProcessor:
     def get_modules(self):
         return self.modules
 
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(extraglobs={'fp': FileProcessor()})
