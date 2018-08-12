@@ -1,7 +1,6 @@
 import unittest
 import model
 import python_controller
-import os
 
 
 class ModelTestCase(unittest.TestCase):
@@ -50,7 +49,7 @@ class ModelTestCase(unittest.TestCase):
 
     def test_file_change(self):
         """
-        Checks if files that are stored as system
+        Checks if file names that are stored from system
         arguments can be changed by function
         """
         ctrl = python_controller.Controller

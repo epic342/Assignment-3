@@ -114,9 +114,6 @@ class FileProcessor:
                     if something.__name__ == "__init__":
                         for key in some_class().__dict__.keys():
                             self.process_attribute(key, class_node)
-                        # for (attr, something_attr) in inspect.getmembers(some_class.__new__(some_class)):
-                        #    if not callable(something_attr):
-                        #        self.process_attribute(attr, class_node)
 
                     self.process_function(something, class_node)
 
