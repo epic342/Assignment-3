@@ -67,6 +67,8 @@ class FileProcessor:
             self.process_module(sys.modules[module_name])
         except ImportError:
             print("A file with this name could not be found, please try again.")
+        except SyntaxError:
+            print("The provided python file contains invalid syntax, please fix the provided code before running")
 
     def process_module(self, module):
         # Find any classes that exists within this module

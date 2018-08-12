@@ -1,16 +1,16 @@
 
-                digraph G {
-                    rankdir=BT
-                    node [
-                        fontname = "Sans Not-Rotated 8"
-                        fontsize = 8
-                        shape = "record"
-                    ]
-                    edge [
-                        fontname = "Sans Not-Rotated 8"
-                        fontsize = 8
-                    ]
-                subgraph {
+                    digraph G {
+                        rankdir=BT
+                        node [
+                            fontname = "Sans Not-Rotated 8"
+                            fontsize = 8
+                            shape = "record"
+                        ]
+                        edge [
+                            fontname = "Sans Not-Rotated 8"
+                            fontsize = 8
+                        ]
+                    subgraph {
 Orchid [
 label = "{Orchid||}"
 ]
@@ -22,9 +22,9 @@ label = "{Sunflower||drop_seed(self)\l}"
 ]
 }
 
-                edge [
-                    arrowhead = "empty"
-                ]
-            Orchid -> Plant
+                    edge [
+                        arrowhead = "empty"
+                    ]
+                Orchid -> Plant
 Sunflower -> Plant
 }

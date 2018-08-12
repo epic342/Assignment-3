@@ -12,80 +12,87 @@ class MakeUML:
         full_path = os.path.realpath(__file__)
         path, filename = os.path.split(full_path)
 
-        with open(path.replace("\\", "/") + '/tmp/class.dot', 'w') as out:
-            # Output as UML class diagram using DOT (graphviz)
-            def line(s):
-                return out.write(s + "\n")
+        # create tmp folder if doesn't exist
+        if not os.path.exists(path.replace("\\", "/") + '/tmp'):
+            os.makedirs(path.replace("\\", "/") + '/tmp')
 
-            def class_name_to_dot(name):
-                return name
+        try:
+            with open(path.replace("\\", "/") + '/tmp/class.dot', 'w') as out:
+                # Output as UML class diagram using DOT (graphviz)
+                def line(s):
+                    return out.write(s + "\n")
 
-            # creates row in table with method name
-            def write_row(out, method):
-                out.write(method + "\l")
+                def class_name_to_dot(name):
+                    return name
 
-            # styles class table and items for output
-            out.write(
-                """
-                digraph G {
-                    rankdir=BT
-                    node [
-                        fontname = "Sans Not-Rotated 8"
-                        fontsize = 8
-                        shape = "record"
-                    ]
+                # creates row in table with method name
+                def write_row(out, method):
+                    out.write(method + "\l")
+
+                # styles class table and items for output
+                out.write(
+                    """
+                    digraph G {
+                        rankdir=BT
+                        node [
+                            fontname = "Sans Not-Rotated 8"
+                            fontsize = 8
+                            shape = "record"
+                        ]
+                        edge [
+                            fontname = "Sans Not-Rotated 8"
+                            fontsize = 8
+                        ]
+                    """
+                )
+
+                for (name, module) in modules.items():
+                    if len(module) > 1:
+                        line("subgraph {")
+
+                    for c in module:
+                        line(class_name_to_dot(c.name) + " [")
+
+                        # Class Title
+                        out.write("label = \"{" + c.name)
+
+                        out.write("|")
+
+                        # Attributes Start
+                        if not self.hide_attributes:
+                            for attr in c.attributes:
+                                write_row(out, attr.name)
+                        # Attributes End
+                        out.write("|")
+                        # Functions Start
+                        if not self.hide_methods:
+                            for func in c.functions:
+                                write_row(out, func.name + "(" + func.get_parameters() +")")
+
+                        # Functions End
+
+                        out.write("}\"\n")
+
+                        line("]")
+
+                    if len(module) > 1:
+                        line("}")
+
+                out.write("""
                     edge [
-                        fontname = "Sans Not-Rotated 8"
-                        fontsize = 8
+                        arrowhead = "empty"
                     ]
-                """
-            )
+                """)
 
-            for (name, module) in modules.items():
-                if len(module) > 1:
-                    line("subgraph {")
+                # draws lines between class boxes
+                for module in modules.values():
+                    for c in module:
+                        for parent in c.super_classes:
+                            line(class_name_to_dot(c.name) + " -> " +
+                                 class_name_to_dot(parent.__name__))
 
-                for c in module:
-                    line(class_name_to_dot(c.name) + " [")
+                line("}")
 
-                    # Class Title
-                    out.write("label = \"{" + c.name)
-
-                    out.write("|")
-
-                    # Attributes Start
-                    if not self.hide_attributes:
-                        for attr in c.attributes:
-                            write_row(out, attr.name)
-                    # Attributes End
-                    out.write("|")
-                    # Functions Start
-                    if not self.hide_methods:
-                        for func in c.functions:
-                            write_row(out, func.name + "(" + func.get_parameters() +")")
-
-                    # Functions End
-
-                    out.write("}\"\n")
-
-                    line("]")
-
-                if len(module) > 1:
-                    line("}")
-
-            out.write("""
-                edge [
-                    arrowhead = "empty"
-                ]
-            """)
-
-            # draws lines between class boxes
-            for module in modules.values():
-                for c in module:
-                    for parent in c.super_classes:
-                        line(class_name_to_dot(c.name) + " -> " +
-                             class_name_to_dot(parent.__name__))
-
-            line("}")
-
-            return out
+                return out
+        except Exception:
+            print("tmp folder failed to exist, if it has not automatically been created in project directory then please create")
