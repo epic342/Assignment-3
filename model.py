@@ -57,11 +57,16 @@ class FileProcessor:
     def process_file(self, file_name):
         # Import specified file_name and store as module
         path, file = os.path.split(file_name)
-
         module_name = file.replace("./", "").replace(".py", "").replace("/", ".")
 
-        __import__(module_name, locals(), globals())
-        self.process_module(sys.modules[module_name])
+        # change path for import to directory of file
+        sys.path.append(path)
+
+        try:
+            __import__(module_name, locals(), globals())
+            self.process_module(sys.modules[module_name])
+        except ImportError:
+            print("A file with this name could not be found, please try again.")
 
     def process_module(self, module):
         # Find any classes that exists within this module

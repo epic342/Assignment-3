@@ -2,7 +2,7 @@ import model
 import uml_output as uml_out
 from cmd import Cmd
 from subprocess import call
-
+import os
 
 class Controller(Cmd):
 

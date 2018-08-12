@@ -1,3 +1,6 @@
+import os
+
+
 class MakeUML:
     """Converting modules into a UML class diagram using graphviz"""
 
@@ -6,7 +9,10 @@ class MakeUML:
         self.hide_methods = hide_methods
 
     def create_class_diagram(self, modules):
-        with open('tmp/class.dot', 'w') as out:
+        full_path = os.path.realpath(__file__)
+        path, filename = os.path.split(full_path)
+
+        with open(path.replace("\\", "/") + '/tmp/class.dot', 'w') as out:
             # Output as UML class diagram using DOT (graphviz)
             def line(s):
                 return out.write(s + "\n")
