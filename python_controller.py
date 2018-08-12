@@ -15,7 +15,7 @@ class Controller(Cmd):
 
     def do_change_python_files(self, args):
         """
-        Change input files to be parsed by system
+        Change input files that are to be parsed by system
         Author: Braeden
         Syntax: change_python_files <filenames.py>
         """

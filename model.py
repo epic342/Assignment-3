@@ -29,8 +29,8 @@ class ClassNode:
     def add_attribute(self, attribute_name):
         self.attributes.append(AttributeNode(attribute_name))
 
-    def add_function(self, function_name, list_of_parameters):
-        self.functions.append(FunctionNode(function_name, list_of_parameters))
+    def add_function(self, function_name, list_of_parameters, visibility):
+        self.functions.append(FunctionNode(function_name, list_of_parameters, visibility))
 
 
 class AttributeNode:
@@ -55,9 +55,10 @@ class FunctionNode:
     >>> len(FunctionNode("Function One", ["Param One", "Param Two"]).parameters)
     2
     """
-    def __init__(self, name, list_of_parameters):
+    def __init__(self, name, list_of_parameters, visibility):
         self.name = name
         self.parameters = list_of_parameters
+        self.visibility = visibility
 
     def get_name(self):
         return self.name
@@ -151,11 +152,21 @@ class FileProcessor:
                         for key in some_class().__dict__.keys():
                             self.process_attribute(key, class_node)
 
-                    self.process_function(something, class_node)
+                    function_name = something.__name__
 
-    def process_function(self, some_function, class_node):
+                    # get visibility of function (public = +, protected = #, private = -)
+
+                    visibility = "+"
+                    if function_name[:2] == "__":
+                        visibility = "-"
+                    elif function_name[0] == "_":
+                        visibility = "#"
+
+                    self.process_function(something, class_node, visibility)
+
+    def process_function(self, some_function, class_node, visibility):
         # Functions are added to the class node with just their title
-        class_node.add_function(some_function.__name__, inspect.getfullargspec(some_function)[0])
+        class_node.add_function(some_function.__name__, inspect.getfullargspec(some_function)[0], visibility)
 
     def process_attribute(self, attribute_name, class_node):
         # Attributes are added to the class node with just their name

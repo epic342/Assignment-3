@@ -1,6 +1,7 @@
 import unittest
 import model
 import python_controller
+import os
 
 
 class ModelTestCase(unittest.TestCase):
@@ -8,7 +9,7 @@ class ModelTestCase(unittest.TestCase):
     Tests for 'model.py'
     """
 
-    individual_file_upload = ["E:\Dropbox\ARA\2018, July, Semester Two\Advanced Programming\Assignment1-MVC\plants.py"]
+    individual_file_upload = [os.getcwd() + "\plants.py"]
 
     def test_individual_file_processed(self):
         """

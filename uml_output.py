@@ -14,13 +14,14 @@ class MakeUML:
     def create_class_diagram(self, modules):
         full_path = os.path.realpath(__file__)
         path, filename = os.path.split(full_path)
+        path = path.replace("\\", "/")
 
         # create tmp folder if doesn't exist
-        if not os.path.exists(path.replace("\\", "/") + '/tmp'):
-            os.makedirs(path.replace("\\", "/") + '/tmp')
+        if not os.path.exists(path + '/tmp'):
+            os.makedirs(path + '/tmp')
 
         try:
-            with open(path.replace("\\", "/") + '/tmp/class.dot', 'w') as out:
+            with open(path + '/tmp/class.dot', 'w') as out:
                 # Output as UML class diagram using DOT (graphviz)
                 def line(s):
                     return out.write(s + "\n")
@@ -70,7 +71,7 @@ class MakeUML:
                         # Functions Start
                         if not self.hide_methods:
                             for func in c.functions:
-                                write_row(out, func.name + "(" + func.get_parameters() +")")
+                                write_row(out, func.visibility + " " + func.name + "(" + func.get_parameters() +")")
 
                         # Functions End
 
