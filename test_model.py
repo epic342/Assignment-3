@@ -10,31 +10,30 @@ class ModelTestCase(unittest.TestCase):
 
     individual_file_upload = ["E:\Dropbox\ARA\2018, July, Semester Two\Advanced Programming\Assignment1-MVC\plants.py"]
 
-    """
-    Braedens test cases
-    """
-
     def test_individual_file_processed(self):
         """
         Is individual module created after processing of file?
+        Author: Braeden
         """
         file_processor = model.FileProcessor()
         modules = file_processor.process_files(self.individual_file_upload)
 
-        self.assertTrue(len(modules) == 1)
+        self.assertTrue(modules == 1)
 
     def test_class_name(self):
         """
         Checks plants.py class names have been appended correctly
+        Author: Braeden
         """
         file_processor = model.FileProcessor()
-        modules = file_processor.process_files(self.individual_file_upload)
+        file_processor.process_files(self.individual_file_upload)
 
-        self.assertTrue(modules['plants'][0].name is 'Orchid')
+        self.assertTrue(file_processor.modules['plants'][0].name is 'Orchid')
 
     def test_parser(self):
         """
         Checks if creation of UML diagram and output to DOT file works
+        Author: Braeden
         """
         ctrl = python_controller.Controller
 
@@ -43,6 +42,7 @@ class ModelTestCase(unittest.TestCase):
     def test_output_to_png(self):
         """
         Checks if creation of UML diagram and output to PNG file works
+        Author: Braeden
         """
         ctrl = python_controller.Controller
         self.assertTrue(ctrl.do_output_to_png(None) is 0)
@@ -51,6 +51,7 @@ class ModelTestCase(unittest.TestCase):
         """
         Checks if file names that are stored from system
         arguments can be changed by function
+        Author: Braeden
         """
         ctrl = python_controller.Controller
         ctrl.do_change_python_files(ctrl, "file_one.py file_two.py")

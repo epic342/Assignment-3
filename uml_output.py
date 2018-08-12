@@ -2,7 +2,10 @@ import os
 
 
 class MakeUML:
-    """Converting modules into a UML class diagram using graphviz"""
+    """
+    Converting modules into a UML class diagram using graphviz
+    Author: Braeden
+    """
 
     def __init__(self, hide_attributes, hide_methods):
         self.hide_attributes = hide_attributes
@@ -94,7 +97,7 @@ class MakeUML:
                 line("}")
 
                 return True
-        except Exception:
+        except OSError:
             print("tmp folder failed to exist, if it has not automatically "
                   "been created in project directory then please create")
             return False

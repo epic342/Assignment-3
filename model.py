@@ -10,6 +10,8 @@ import os
 class ClassNode:
     """
     Class object containing attributes and functions
+    Author: Braeden
+
     >>> ClassNode("Class One", []).name
     'Class One'
     >>> class_one = ClassNode("Class One", [])
@@ -34,6 +36,8 @@ class ClassNode:
 class AttributeNode:
     """
     Attribute object containing attribute name
+    Author: Braeden
+
     >>> AttributeNode("Attribute One").name
     'Attribute One'
     """
@@ -44,6 +48,8 @@ class AttributeNode:
 class FunctionNode:
     """
     Function object containing function name and parameters
+    Author: Braeden
+
     >>> FunctionNode("Function One", []).get_name()
     'Function One'
     >>> len(FunctionNode("Function One", ["Param One", "Param Two"]).parameters)
@@ -73,6 +79,8 @@ class FileProcessor:
     def process_files(self, file_names):
         """
         Loop through a list of files, and process each file as an individual
+        Author: Braeden
+
         >>> fp.process_files(["plants.py"])
         1
         >>> fp.process_files(["plants.py", "plants2.py"])
@@ -95,7 +103,7 @@ class FileProcessor:
             self.process_module(sys.modules[module_name])
         except ImportError:
             print("A file with this name could not be found, please try again.")
-        except SyntaxError:
+        except OSError:
             print("The provided python file contains invalid syntax, please fix the provided code before running")
 
     def process_module(self, module):

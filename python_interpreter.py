@@ -13,6 +13,8 @@ def initiate_python_parser(command_line_args):
 
 if __name__ == '__main__' :
     # USAGE: python_parser.py <"filename or * for all">.py
+    import doctest
+    doctest.testmod()
 
     if len(sys.argv) == 1:
         print("USAGE: " + sys.argv[0] + " <pythonfiles>")
