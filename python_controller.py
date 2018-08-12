@@ -4,6 +4,7 @@ from cmd import Cmd
 from subprocess import call
 import os
 
+
 class Controller(Cmd):
 
     def __init__(self, args):
@@ -40,11 +41,12 @@ class Controller(Cmd):
 
         self.run_parser(self.args, hide_attributes, hide_methods)
 
-    def do_output_to_png(self, args):
+    @staticmethod
+    def do_output_to_png(args):
         """
         Converts dot file into PNG
         """
-        call(['dot', '-Tpng', 'tmp/class.dot', '-o', 'tmp/class.png'])
+        return call(['dot', '-Tpng', 'tmp/class.dot', '-o', 'tmp/class.png'])
 
     @staticmethod
     def run_parser(file_names, hide_attributes, hide_methods):

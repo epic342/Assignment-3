@@ -93,6 +93,8 @@ class MakeUML:
 
                 line("}")
 
-                return out
+                return True
         except Exception:
-            print("tmp folder failed to exist, if it has not automatically been created in project directory then please create")
+            print("tmp folder failed to exist, if it has not automatically "
+                  "been created in project directory then please create")
+            return False
