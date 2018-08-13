@@ -1,3 +1,7 @@
+'''
+Linked list data structure. File is used as part of testing csv plugin
+Author: Peter
+'''
 class Node:
 
 	def __init__(self, data, node):
