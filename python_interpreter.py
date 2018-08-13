@@ -16,7 +16,11 @@ if __name__ == '__main__' :
     import doctest
     doctest.testmod()
 
-    if len(sys.argv) == 1:
-        print("USAGE: " + sys.argv[0] + " <pythonfiles>")
-    else:
-        initiate_python_parser(sys.argv[1:])
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-f", "--file", nargs='+', help="Multiple file input for parse", required=True)
+
+    args = parser.parse_args()
+
+    if len(args.file) > 0:
+        initiate_python_parser(args.file)
