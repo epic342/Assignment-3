@@ -1,5 +1,6 @@
 import model
 import uml_output as uml_out
+import python_code_validator as validate
 from cmd import Cmd
 from subprocess import call
 
@@ -110,3 +111,18 @@ class Controller(Cmd):
             return new_uml.create_class_diagram(extracted_modules)
         else:
             print("Error: No files were set, use command change_python_files")
+
+    def do_validate_py(self, args):
+        '''
+        Validates a single file as executable python code.
+        Author: Peter
+        '''
+        check_code = validate.CodeValidator()
+        validated_file = check_code.validate_files(args)
+ 
+    def do_quit(self, other):
+        '''
+        Quits programme.
+        '''
+        print("Goodbye ......")
+        return True
