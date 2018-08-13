@@ -63,6 +63,32 @@ class Controller(Cmd):
         print("Input file selected \"" + self.args + "\"")
         
 
+    # Created and edited by Michael Huang, #2, #14
+    def do_output_to_file(self, args):
+        """
+        Sets the output of the class diagram to a file location.
+        Syntax: output_to_file
+                output_to_file [path]
+
+
+        """
+
+        from shutil import copyfile
+        if len(args) == 0:
+            from tkinter import Tk
+            from tkinter import filedialog
+
+            root = Tk()
+            root.filename = filedialog.askdirectory()
+            print(root.filename)
+            root.withdraw()
+
+            copyfile('tmp/class.png', root.filename + '/class.png')
+        else:
+            copyfile('tmp/class.png', args + '/class.png')
+            print('The output to the file destination was successful.')    
+        
+        
     @staticmethod
     def do_output_to_png(args):
         """
