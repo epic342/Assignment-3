@@ -11,6 +11,7 @@ class ClassNode:
     """
     Class object containing attributes and functions
     Author: Braeden
+    Contributor: Peter
 
     >>> ClassNode("Class One", []).name
     'Class One'
@@ -20,17 +21,23 @@ class ClassNode:
     >>> len(class_one.attributes)
     2
     """
-    def __init__(self, name, super_classes):
+    def __init__(self, name, super_classes = None):
         self.name = name
         self.attributes = []
         self.functions = []
-        self.super_classes = super_classes
-
+        if super_classes != None:
+            self.super_classes = []
+        else:
+            self.super_classes = super_classes
+            
     def add_attribute(self, attribute_name, visibility):
         self.attributes.append(AttributeNode(attribute_name, visibility))
 
     def add_function(self, function_name, list_of_parameters, visibility):
         self.functions.append(FunctionNode(function_name, list_of_parameters, visibility))
+        
+    def add_super_class(self, super_class):
+        self.super_classes.append(super_class)
 
 
 class AttributeNode:
