@@ -123,13 +123,13 @@ if __name__ == '__main__':
     newmodule = csvhandler.open_file('myclass.csv')
     print('------------------------------')
     doParse = model.FileProcessor()
-    filenames =['plants.py']
+    filenames =["plants.py"]
     doParse.process_files(filenames)
     modules = doParse.get_modules()
     print(modules)
     csvhandler.write_csv_file(modules, 'plants.csv')
     csvhandler.write_csv_file(newmodule, 'output.csv')
     
-    import umloutput as uml
+    import uml_output as uml
     makediagram = uml.MakeUML()
     makediagram.create_class_diagram(modules)

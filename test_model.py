@@ -3,7 +3,7 @@ import model
 import python_controller
 import os
 import csv_plugin
-import umloutput
+import uml_output
 import sys
 
 
