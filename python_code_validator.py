@@ -1,7 +1,18 @@
 import py_compile
 
 class CodeValidator:
-# Author Peter
+    """
+    Class to validate files before parsing
+    Author: Peter
+    >>> validate = CodeValidator()
+    >>> result = validate.validate_files(['plants.py','LinkedListNode.py'])
+    plants.py successfully validated
+    LinkedListNode.py successfully validated
+    >>> len(result)
+    2
+    >>> result = validate.validate_file('plants.py')
+    plants.py successfully validated
+    """
 
     def __init__(self):
         pass
@@ -32,5 +43,6 @@ class CodeValidator:
 
 
 if __name__ =='__main__':
-    validator = CodeValidator()
-    print (validator.validate_file('LinkedListNode.py'))
+    import doctest
+    doctest.testmod()
+    doctest.testmod(verbose=True)
