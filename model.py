@@ -157,8 +157,10 @@ class FileProcessor:
                 if some_class.__name__ == function_class:
                     # create list of attributes in class with constructor
                     if something.__name__ == "__init__":
-                        for key in some_class().__dict__.keys():
-                            self.process_attribute(key, class_node, self.get_visibility_of_string(key))
+                        attributes = something.__code__.co_names
+
+                        for attribute in attributes:
+                            self.process_attribute(attribute, class_node, self.get_visibility_of_string(attribute))
 
                     self.process_function(something, class_node, self.get_visibility_of_string(something.__name__))
 
