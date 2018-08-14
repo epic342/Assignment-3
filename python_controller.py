@@ -1,6 +1,7 @@
 import model
 import uml_output as uml_out
 import python_code_validator as validate
+import csv_plugin as csv
 from cmd import Cmd
 from subprocess import call
 
@@ -119,10 +120,57 @@ class Controller(Cmd):
         '''
         check_code = validate.CodeValidator()
         validated_file = check_code.validate_files(args)
- 
+
+    def do_save_to_csv(self, params):
+        '''
+        Saves specified file to csv.
+        [command_line] input_file output_file
+        Author: Peter
+        '''
+        # print(params, type(params))
+        input_file = []
+        if params == '':
+            params = 'plants.py output.csv'
+        args = params.split(' ')
+        # print(args)
+        if len(args) >= 1:
+            input_file.append(args[0])
+            output_file = 'output.csv'
+        if len(args) >= 2:
+            output_file = args[1]
+        if input_file[0].endswith('.py'):
+            fileprocessor = model.FileProcessor()
+            fileprocessor.process_files(input_file)
+            modules = fileprocessor.get_modules()
+            # print(modules)
+            csv_writer = csv.CSV_handler() 
+            if csv_writer.write_csv_file(modules, output_file) == True:
+                print('File successfully saved as {}'.format(output_file))
+
+    def do_load_csv_for_uml(self, params):
+        '''
+        Loads csv file and creates UML diagram
+        [command line] [file.csv]
+        '''
+        if params == '':
+            params = 'output.csv'
+        args = params.split(' ')
+        print(args)
+        if len(args) >= 1:
+            input_file = args[0]
+        if input_file.endswith('.csv'):
+            csvloader = csv.CSV_handler()
+            module = csvloader.open_file(input_file)
+            makediagram = uml_out.MakeUML(True, True)
+            if makediagram.create_class_diagram(module) == True:
+                print("{} successfully converted to UML class diagram".format(input_file))
+
+        
+
     def do_quit(self, other):
         '''
         Quits programme.
+        Author: Peter
         '''
         print("Goodbye ......")
         return True

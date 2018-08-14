@@ -91,9 +91,10 @@ class MakeUML:
                 # draws lines between class boxes
                 for module in modules.values():
                     for c in module:
-                        for parent in c.super_classes:
-                            line(class_name_to_dot(c.name) + " -> " +
-                                 class_name_to_dot(parent.__name__))
+                        if c.super_classes != None:
+                            for parent in c.super_classes:
+                                line(class_name_to_dot(c.name) + " -> " +
+                                    class_name_to_dot(parent.__name__))
 
                 line("}")
 

@@ -5,7 +5,7 @@ and put them in a format which can then be used for creating a uml diagram.
 
 import csv
 import sys
-import model
+import model_v1 as model
 
 __author__ = "Peter Campbell"
 __copyright__ = "Copyright 2018,BCPR301 Class Assignment 1"
@@ -113,23 +113,34 @@ class CSV_handler:
                         for super_class in c.super_classes:
                             output += ',{}'.format(super_class.name)
                 output += '\n'
-        #print(output)
-        with open (filename, "wt") as f:
-            f.write(output)
-        return output
+        try:
+            with open (filename, "wt") as f:
+                f.write(output)
+            return True
+        except IOError:
+            print("Cannot write csv file. Try again another day")
+            return False
+        except PermissionError:
+            print('You do not have appropriate permissions on this system to save the file')
+            return False
+        except:
+            print('The system encountered a problem here. Please turn off your computer,') 
+            print('jump up and down three times, flap your arms and quack like a duck and then try again.')
+            return False    
 
 if __name__ == '__main__':
     csvhandler = CSV_handler()
-    newmodule = csvhandler.open_file('myclass.csv')
+    newmodule = csvhandler.open_file('output.csv')
+    print(newmodule)
     print('------------------------------')
-    doParse = model.FileProcessor()
-    filenames =["plants.py"]
-    doParse.process_files(filenames)
-    modules = doParse.get_modules()
-    print(modules)
-    csvhandler.write_csv_file(modules, 'plants.csv')
-    csvhandler.write_csv_file(newmodule, 'output.csv')
+    #doParse = model.FileProcessor()
+    #filenames =["plants.py"]
+    #doParse.process_files(filenames)
+    #modules = doParse.get_modules()
+    #print(modules)
+    #csvhandler.write_csv_file(modules, 'plants.csv')
+    csvhandler.write_csv_file(newmodule, 'myclass.csv')
     
     import uml_output as uml
-    makediagram = uml.MakeUML()
-    makediagram.create_class_diagram(modules)
+    makediagram = uml.MakeUML(True, True)
+    makediagram.create_class_diagram(newmodule)

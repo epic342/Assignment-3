@@ -8,7 +8,7 @@ import python_controller as pc
 
 def initiate_python_parser(command_line_args):
     controller = pc.Controller(command_line_args)
-    controller.run_parser(command_line_args)
+    #controller.run_parser(command_line_args, True, True)
 
 
 if __name__ == '__main__' :
