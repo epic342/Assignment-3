@@ -25,7 +25,7 @@ class ClassNode:
         self.name = name
         self.attributes = []
         self.functions = []
-        if super_classes != None:
+        if super_classes == None:
             self.super_classes = []
         else:
             self.super_classes = super_classes
