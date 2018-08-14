@@ -2,8 +2,10 @@ import model
 import uml_output as uml_out
 import python_code_validator as validate
 import csv_plugin as csv
+import pickle_modules
 from cmd import Cmd
 from subprocess import call
+
 
 
 class Controller(Cmd):
@@ -151,6 +153,7 @@ class Controller(Cmd):
         '''
         Loads csv file and creates UML diagram
         [command line] [file.csv]
+        Author: Peter
         '''
         if params == '':
             params = 'output.csv'
@@ -165,7 +168,32 @@ class Controller(Cmd):
             if makediagram.create_class_diagram(module) == True:
                 print("{} successfully converted to UML class diagram".format(input_file))
 
+    def do_pickle_modules(self, filename = 'plants.py'):
+        '''
+        Load modules from single file and save them using pickle
+        Author: Peter
+
+        Command:
+        pickle_modules filename
+        eg pickle_modules plants.py
+        '''
+        file = [filename]
+        parser = model.FileProcessor()
+        parser.process_files(file)
+        modules = parser.get_modules()
+        pickler = pickle_modules.PickleModules()
+        return pickler.save(modules)
+
+    def load_pickle(self):
+        '''
+        Loads previously saved module using pickle
+        Author: Peter
         
+        Command:
+        load_pickle
+        '''
+        pickler = pickle_modules.PickleModules()
+        return pickler.load()
 
     def do_quit(self, other):
         '''
