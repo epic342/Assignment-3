@@ -9,13 +9,40 @@ from subprocess import call
 
 
 class Controller(Cmd):
-
-    def __init__(self, args):
+    def __init__(self):
         Cmd.__init__(self)
-        self.args = args
+        self.args = self.register_arguments()
+        self.parse_arguments()
         self.prompt = '> '
+        # Command line argument variables
+        self.files = None
+        self.statistics = False
+
         self.cmdloop('Starting prompt...\n'
                      'Type "help" for commands')
+
+    #Created by Jake
+    def register_arguments(self):
+        #Create your commands in here
+        parser = argparse.ArgumentParser()
+        #Created by Braeden
+        parser.add_argument("-f", "--file", nargs="+", help="Multiple file input for parse")
+        # Created By Jake Reddock
+        parser.add_argument("-s", "--statistics", action='store_true', help="Print Statistics for classes uploaded")
+        return parser.parse_args()
+
+    # Created By Jake Reddock
+    def parse_arguments(self):
+        #Create Logic for your arguments here
+        #Created by Jake
+        if self.args.statistics:
+            self.statistics = self.args.statistics
+            print("Statistics collecting is turned on")
+        #Created by Braeden
+        if self.args.file is not None:
+            self.files = self.args.file
+            print("Files selected: ")
+            print(*self.files, sep="\n")
 
     def do_change_python_files(self, args):
         """
