@@ -11,13 +11,13 @@ from subprocess import call
 class Controller(Cmd):
     def __init__(self):
         Cmd.__init__(self)
-        self.args = self.register_arguments()
-        self.parse_arguments()
-        self.prompt = '> '
         # Command line argument variables
         self.files = None
         self.statistics = False
-
+        self.extracted_modules = None
+        self.args = self.register_arguments()
+        self.parse_arguments()
+        self.prompt = '> '
         self.cmdloop('Starting prompt...\n'
                      'Type "help" for commands')
 
@@ -75,7 +75,7 @@ class Controller(Cmd):
             if "-m" in user_options:
                 hide_methods = True
 
-        self.run_parser(self.args, hide_attributes, hide_methods)
+        self.run_parser(self.files, hide_attributes, hide_methods)
         
     def do_set_input_file(self, args):
         """
