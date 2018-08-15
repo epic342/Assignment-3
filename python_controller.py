@@ -147,9 +147,14 @@ class Controller(Cmd):
         Validates a single file as executable python code.
         Author: Peter
         '''
+        files = []
+        if type(args) == str:
+            files.append(args)
+        elif type(args) == list:
+            files = args
+        
         check_code = validate.CodeValidator()
-        validated_file = check_code.validate_files(args)
-
+        validated_file = check_code.validate_files(files)
     def do_save_to_csv(self, params):
         '''
         Saves specified file to csv.
