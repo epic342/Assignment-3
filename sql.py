@@ -32,7 +32,21 @@ class database:
         """
         self.conn.close()
 
-#Written By Jake Reddock
+    # Written by Michael Huang
+    def create_table(self, sql):
+        """
+        Checks if the table has been created and added to the database
+        Author: Michael Huang
+        """
+
+        table_result = self.query(sql)
+        if table_result:
+            print("Table was added")
+        else:
+            print("Table was not added")
+            
+            
+# Written By Jake Reddock
 class database_result:
     def __init__(self, database, query):
         self.database = database
@@ -46,10 +60,11 @@ class database_result:
     def fetch(self):
         return self.query
 
-#Written By Jake Reddock
+
+# Written By Jake Reddock
 if __name__ == '__main__':
     db = database("")
-    db.query("""
+    db.query, db.create_table("""
 CREATE TABLE if not exists employee (
 staff_number INTEGER PRIMARY KEY,
 fname VARCHAR(20),
