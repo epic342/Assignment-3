@@ -25,6 +25,8 @@ class database:
         except Exception as err:
             print('Query Failed: %s\nError: %s' % (sql, str(err)))
             return False
+        except:
+            print("Query Failed: An unexpected exception")
 
     # Written by Jake Reddock
     def close(self):
