@@ -22,8 +22,8 @@ class database:
             query_resource = c.execute(sql).fetchall()
             self.conn.commit()
             return database_result(self, query_resource)
-        except Exception as err:
-            print('Query Failed: %s\nError: %s' % (sql, str(err)))
+        except sqlite3.OperationalError as err:
+            print("Query Failed: %s" % err)
             return False
 
     # Written by Jake Reddock
