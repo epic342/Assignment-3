@@ -1,3 +1,5 @@
+from tkinter import filedialog, Tk
+
 import model
 import uml_output as uml_out
 import python_code_validator as validate
@@ -55,7 +57,7 @@ class Controller(Cmd):
             self.args = args.split()
         else:
             print("Syntax Error: change_python_files <filenames.py>")
-
+    #Edited By Jake
     def do_output_to_dot(self, args):
         """
         Parse and output the file into a UML diagram
@@ -75,7 +77,7 @@ class Controller(Cmd):
             if "-m" in user_options:
                 hide_methods = True
 
-        self.run_parser(self.args, hide_attributes, hide_methods)
+        self.run_parser(self, hide_attributes, hide_methods)
         
     def do_set_input_file(self, args):
         """
@@ -127,18 +129,19 @@ class Controller(Cmd):
         Author: Braeden
         """
         return call(['dot', '-Tpng', 'tmp/class.dot', '-o', 'tmp/class.png'])
-
+    
+    #Edited by Jake
     @staticmethod
-    def run_parser(file_names, hide_attributes, hide_methods):
-        if len(file_names) > 0:
+    def run_parser(self, hide_attributes, hide_methods):
+        if len(self.files) > 0:
             # Initiate processor
             processor = model.FileProcessor()
-            processor.process_files(file_names)
+            processor.process_files(self.files)
 
-            extracted_modules = processor.get_modules()
+            self.extracted_modules = processor.get_modules()
 
             new_uml = uml_out.MakeUML(hide_attributes, hide_methods)
-            return new_uml.create_class_diagram(extracted_modules)
+            return new_uml.create_class_diagram(self.extracted_modules)
         else:
             print("Error: No files were set, use command change_python_files")
 
