@@ -25,6 +25,8 @@ class database:
         except sqlite3.OperationalError as err:
             print("Query Failed: %s" % err)
             return False
+        except:
+            print("Query Failed: An unexpected exception")
 
     # Written by Jake Reddock
     def close(self):
