@@ -17,6 +17,7 @@ class Controller(Cmd):
         # Command line argument variables
         self.files = None
         self.statistics = False
+        self.output = None
 
         self.cmdloop('Starting prompt...\n'
                      'Type "help" for commands')
@@ -29,6 +30,8 @@ class Controller(Cmd):
         parser.add_argument("-f", "--file", nargs="+", help="Multiple file input for parse")
         # Created By Jake Reddock
         parser.add_argument("-s", "--statistics", action='store_true', help="Print Statistics for classes uploaded")
+        # Created By Michael Huang
+        parser.add_argument("-o", "--output", help="Shows name of the output file")
         return parser.parse_args()
 
     # Created By Jake Reddock
@@ -43,6 +46,10 @@ class Controller(Cmd):
             self.files = self.args.file
             print("Files selected: ")
             print(*self.files, sep="\n")
+        # Created by Michael Huang
+        if self.args.output is not None:
+            self.output = self.args.output
+            print("Now showing names of output files")    
 
     def do_change_python_files(self, args):
         """
