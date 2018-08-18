@@ -64,6 +64,7 @@ class Controller(Cmd):
             self.args = args.split()
         else:
             print("Syntax Error: change_python_files <filenames.py>")
+            
     #Edited By Jake
     def do_output_to_dot(self, args):
         """
@@ -84,7 +85,7 @@ class Controller(Cmd):
             if "-m" in user_options:
                 hide_methods = True
 
-    self.run_parser(self.files, hide_attributes, hide_methods)
+        self.run_parser(self.files, hide_attributes, hide_methods)
         
     def do_set_input_file(self, args):
         """
