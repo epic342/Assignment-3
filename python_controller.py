@@ -17,10 +17,10 @@ class Controller(Cmd):
         self.files = None
         self.statistics = False
         self.extracted_modules = None
+        self.output = None
         self.args = self.register_arguments()
         self.parse_arguments()
         self.prompt = '> '
-        self.output = None
         self.cmdloop('Starting prompt...\n'
                      'Type "help" for commands')
 
