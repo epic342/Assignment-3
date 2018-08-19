@@ -163,6 +163,9 @@ class FileProcessor:
                             self.process_attribute(attribute, class_node, self.get_visibility_of_string(attribute))
 
                     self.process_function(something, class_node, self.get_visibility_of_string(something.__name__))
+        #Edited By Jake
+        statistics = StatisticsCreator()
+        statistics.insert_class(class_node)
 
     def process_function(self, some_function, class_node, visibility):
         # Functions are added to the class node with just their title
