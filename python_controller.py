@@ -15,7 +15,7 @@ class Controller(Cmd):
         Cmd.__init__(self)
         # Command line argument variables
         self.files = None
-        self.statistics = False
+        self.statistics = None
         self.extracted_modules = None
         self.output = None
         self.args = self.register_arguments()
@@ -51,7 +51,33 @@ class Controller(Cmd):
         # Created by Michael Huang
         if self.args.output is not None:
             self.output = self.args.output
-            print("Now showing names of output files")    
+            print("Now showing names of output files")
+            
+    def do_enable_statistics(self,args):
+        """
+        Enabled statistics collection
+        Author: Jake Reddock
+        Syntax: enable_statistics
+        """
+        self.statistics = StatisticsCreator()
+        self.statistics.create_tables();
+        print("Statistics collecting is turned on")
+
+    def do_show_statistics(self, args):
+        """
+        Show statistics about the analysed classes
+        Author: Jake Reddock
+        Syntax: show_statistics
+        Requires: enable_statistics, output_to_dot
+        """
+        if self.statistics is not None:
+            if self.extracted_modules is not None:
+                print("Creating graph, please wait...")
+                self.statistics.show_graph_data()
+            else:
+                print("Please run the \"output_to_dot\" to command")
+        else:
+            print("Statistics collecting is not enabled, type \"enable_statistics\" to enable")
 
     def do_change_python_files(self, args):
         """
@@ -85,7 +111,7 @@ class Controller(Cmd):
             if "-m" in user_options:
                 hide_methods = True
 
-        self.run_parser(self.files, hide_attributes, hide_methods)
+        self.run_parser(self, hide_attributes, hide_methods)
         
     def do_set_input_file(self, args):
         """
