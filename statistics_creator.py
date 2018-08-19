@@ -13,7 +13,7 @@ class ClassData:
 # By Jake Reddock
 class StatisticsCreator:
     def __init__(self):
-        self.db = sql.database("example")
+        self.db = sql.database("statistics")
 
     def create_tables(self):
         self.db.query("CREATE TABLE IF NOT EXISTS ClassData (classID INTEGER PRIMARY KEY AUTOINCREMENT, className "
