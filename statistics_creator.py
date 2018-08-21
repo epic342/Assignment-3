@@ -12,8 +12,8 @@ class ClassData:
 
 # By Jake Reddock
 class StatisticsCreator:
-    def __init__(self):
-        self.db = sql.database("statistics")
+    def __init__(self, db_name):
+        self.db = sql.database(db_name)
 
     def create_tables(self):
         try:
