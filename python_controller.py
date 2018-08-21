@@ -62,7 +62,7 @@ class Controller(Cmd):
         Author: Jake Reddock
         Syntax: enable_statistics
         """
-        self.statistics = StatisticsCreator()
+        self.statistics = StatisticsCreator("statistics")
         self.statistics.create_tables();
         print("Statistics collecting is turned on")
 
