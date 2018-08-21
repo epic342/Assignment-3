@@ -43,7 +43,7 @@ class Controller(Cmd):
         #Create Logic for your arguments here
         #Created by Jake
         if self.args.statistics:
-            self.statistics = StatisticsCreator()
+            self.statistics = StatisticsCreator("statistics")
             self.statistics.create_tables();
             print("Statistics collecting is turned on")
         #Created by Braeden
