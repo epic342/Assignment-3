@@ -165,7 +165,7 @@ class FileProcessor:
 
                     self.process_function(something, class_node, self.get_visibility_of_string(something.__name__))
         #Edited By Jake
-        statistics = StatisticsCreator()
+        statistics = StatisticsCreator("statistics")
         statistics.insert_class(class_node)
 
     def process_function(self, some_function, class_node, visibility):
