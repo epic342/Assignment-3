@@ -1,6 +1,13 @@
 import sqlite3
 
 
+class SQLError(Exception):
+    def __init__(self, error_message):
+        self.error_message = error_message
+
+    def __str__(self):
+        return "Query Failed: %s" % self.error_message
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -23,8 +30,7 @@ class database:
             self.conn.commit()
             return database_result(self, query_resource)
         except sqlite3.OperationalError as err:
-            print("Query Failed: %s" % err)
-            return False
+            raise SQLError(err)
         except:
             print("Query Failed: An unexpected exception")
 
