@@ -35,7 +35,7 @@ class Controller(Cmd):
         # Created By Jake Reddock
         parser.add_argument("-s", "--statistics", action='store_true', help="Print Statistics for classes uploaded")
         # Created By Michael Huang
-        parser.add_argument("-o", "--output", help="Shows name of the output file")
+        parser.add_argument("-o", "--output", help="Setting name of the output location")
         return parser.parse_args()
 
     # Created By Jake Reddock
