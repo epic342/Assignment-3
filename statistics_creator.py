@@ -16,10 +16,16 @@ class StatisticsCreator:
         self.db = sql.database("statistics")
 
     def create_tables(self):
-        self.db.query("CREATE TABLE IF NOT EXISTS ClassData (classID INTEGER PRIMARY KEY AUTOINCREMENT, className "
-                      "TEXT, attributeCount INTEGER, methodCount INTEGER);")
+        try:
+            self.db.query("INSERT INTO ClassData VALUES(null,'" +
+                          class_node.name + "'," +
+                          str(len(class_node.attributes)) + "," +
+                          str(len(class_node.functions)) + ");")
+        except SQLError as e:
+            print(e)
 
     def insert_class(self, class_node):
+        
         self.db.query("INSERT INTO ClassData VALUES(null,'" +
                       class_node.name + "'," +
                       str(len(class_node.attributes)) + "," +
@@ -27,7 +33,10 @@ class StatisticsCreator:
 
     def get_class_data(self):
         class_data_list = []
-        result = self.db.query("SELECT className,attributeCount,methodCount from ClassData").fetch()
+        try:
+            result = self.db.query("SELECT className,attributeCount,methodCount from ClassData").fetch()
+        except SQLError as e:
+            print(e)
         for row in result:
             class_name = row['className']
             attribute_count = row['attributeCount']
