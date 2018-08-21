@@ -54,7 +54,7 @@ class Controller(Cmd):
         # Created by Michael Huang
         if self.args.output is not None:
             self.output = self.args.output
-            print("Now showing names of output files")
+            print("Now setting names of output files")
             
     def do_enable_statistics(self,args):
         """
@@ -132,11 +132,11 @@ class Controller(Cmd):
             self.args = args
         print("Input file selected \"" + self.args + "\"")
         
-
-    # Created and edited by Michael Huang, #2, #14
+    # Created by Michael Huang
     def do_output_to_file(self, args):
         """
         Sets the output of the class diagram to a file location.
+        Author: Michael Huang
         Syntax: output_to_file
                 output_to_file [path]
 
@@ -155,8 +155,14 @@ class Controller(Cmd):
 
             copyfile('tmp/class.png', root.filename + '/class.png')
         else:
-            copyfile('tmp/class.png', args + '/class.png')
-            print('The output to the file destination was successful.')    
+            try:
+                copyfile('tmp/class.png', args + '/class.png')
+                print('The output to the file destination was successful.')
+            except FileNotFoundError as f:
+                print('Failed to find a file: %s' % f)
+                print('Please specify a valid file path.')
+            except:
+                print('Unexpected error has occurred.')
         
         
     @staticmethod
