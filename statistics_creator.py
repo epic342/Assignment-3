@@ -21,9 +21,9 @@ class StatisticsCreator:
 
     def insert_class(self, class_node):
         self.db.query("INSERT INTO ClassData VALUES(null,'" +
-                      class_node.name + "'," +
-                      str(len(class_node.attributes)) + "," +
-                      str(len(class_node.functions)) + ");")
+                          class_node.class_name + "'," +
+                          str(class_node.attribute_count) + "," +
+                          str(class_node.method_count) + ");")
 
     def get_class_data(self):
         class_data_list = []
