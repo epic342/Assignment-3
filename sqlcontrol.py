@@ -67,6 +67,10 @@ class MyDatabase:
         
         """
         self.conn.close()
+        if self.conn.close():
+            return True
+        else:
+            return False
 
     # Written by Michael Huang
     def validate_table(self, sql):
