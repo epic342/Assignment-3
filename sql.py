@@ -36,23 +36,10 @@ class database:
 
     # Written by Jake Reddock
     def close(self):
-        """Close the connection to the database
         """
-        self.conn.close()
-
-    # Written by Michael Huang
-    def create_table(self, sql):
+        Close the connection to the database
         """
-        Checks if the table has been created and added to the database
-        Author: Michael Huang
-        """
-
-        table_result = self.query(sql)
-        if table_result:
-            print("Table was added")
-        else:
-            print("Table was not added")
-            
+        self.conn.close()  
             
 # Written By Jake Reddock
 class database_result:
