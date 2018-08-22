@@ -130,7 +130,7 @@ class Controller(Cmd):
                                                        filetypes=(("Python Files", "*.py"), ("all files", "*.*")))
             root.withdraw()
         else:
-            self.files = args
+            self.files = [args]
         if self.files == "":
             print("No input file selected.")
         else:
