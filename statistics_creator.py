@@ -17,19 +17,17 @@ class StatisticsCreator:
 
     def create_tables(self):
         try:
-            self.db.query("INSERT INTO ClassData VALUES(null,'" +
-                          class_node.name + "'," +
-                          str(len(class_node.attributes)) + "," +
-                          str(len(class_node.functions)) + ");")
+            self.db.query("CREATE TABLE IF NOT EXISTS ClassData (classID INTEGER PRIMARY KEY AUTOINCREMENT, className "
+                          "TEXT, attributeCount INTEGER, methodCount INTEGER);")
         except sql.SQLError as e:
             print(e)
 
     def insert_class(self, class_node):
         try:
-        self.db.query("INSERT INTO ClassData VALUES(null,'" +
-                          class_node.class_name + "'," +
-                          str(class_node.attribute_count) + "," +
-                          str(class_node.method_count) + ");")
+            self.db.query("INSERT INTO ClassData VALUES(null,'" +
+                          class_node.name + "'," +
+                          str(len(class_node.attributes)) + "," +
+                          str(len(class_node.functions)) + ");")
         except sql.SQLError as e:
             print(e)
             
