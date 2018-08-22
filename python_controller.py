@@ -141,15 +141,11 @@ class Controller(Cmd):
         Author: Michael Huang
         Syntax: output_to_file
                 output_to_file [path]
-
-
         """
 
         from shutil import copyfile
         if len(args) == 0:
-            from tkinter import Tk
-            from tkinter import filedialog
-
+            
             root = Tk()
             root.filename = filedialog.askdirectory()
             print(root.filename)
