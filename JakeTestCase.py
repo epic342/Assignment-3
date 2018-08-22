@@ -1,12 +1,23 @@
 import unittest
 import sql
 from statistics_creator import ClassData, StatisticsCreator
+from model import ClassNode
+from python_controller import Controller
+import os
 
 
 class ModelTestCase(unittest.TestCase):
     """
     Tests for 'sql.py'
     """
+
+    def setUp(self):
+        if os.path.exists("UnitTest.db"):
+            os.remove("UnitTest.db")
+
+    def tearDown(self):
+        if os.path.exists("UnitTest.db"):
+            os.remove("UnitTest.db")
 
     def test_database_creation(self):
         """
@@ -35,6 +46,11 @@ class ModelTestCase(unittest.TestCase):
         Author: Jake
         """
         db = sql.database("UnitTest")
+
+        db.query("""CREATE TABLE IF NOT EXISTS TestTable (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                data TEXT)""")
+
         query = db.query("""INSERT INTO TestTable VALUES(NULL, 'TestData')""")
 
         self.assertTrue(query)
@@ -45,6 +61,13 @@ class ModelTestCase(unittest.TestCase):
          Author: Jake
         """
         db = sql.database("UnitTest")
+
+        db.query("""CREATE TABLE IF NOT EXISTS TestTable (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        data TEXT)""")
+
+        db.query("""INSERT INTO TestTable VALUES(NULL, 'TestData')""")
+
         query = db.query("""SELECT data FROM TestTable""")
 
         self.assertTrue(query)
@@ -55,6 +78,13 @@ class ModelTestCase(unittest.TestCase):
         Author: Jake
         """
         db = sql.database("UnitTest")
+
+        db.query("""CREATE TABLE IF NOT EXISTS TestTable (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                data TEXT)""")
+
+        db.query("""INSERT INTO TestTable VALUES(NULL, 'TestData')""")
+
         query = db.query("""SELECT data FROM TestTable WHERE id=1""")
 
         self.assertEqual(query.fetch()[0]['data'], "TestData")
@@ -65,21 +95,39 @@ class ModelTestCase(unittest.TestCase):
         Author: Jake
         """
         db = sql.database("UnitTest")
+
+        db.query("""CREATE TABLE IF NOT EXISTS TestTable (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                data TEXT)""")
+
+        db.query("""INSERT INTO TestTable VALUES(NULL, 'TestData')""")
+
         query = db.query("""SELECT data FROM TestTable WHERE id=1""")
 
         self.assertEqual(query.size(), 1)
 
-    # def test_database_exception(self):
-    #     db = sql.database("UnitTest")
-    #     try:
-    #         db.query("""SELECT * FROM UnknownTable""")
-    #     except sql.SQLError as e:
-    #         print(e)
-    #
-    #     self.failUnlessRaises(sql.SQLError, db.query("""SELECT * FROM UnknownTable"""))
+    def test_database_exception(self):
+        """
+        Will an SQLError be thrown when a bad query is entered?
+        Author: Jake
+        """
+        db = sql.database("UnitTest")
+        
+        with self.assertRaises(sql.SQLError):
+            db.query("""SELECT * FROM UnknownTable""")
+
     """
     Tests for 'statistics_creator.py'
     """
+
+    def test_statistics_creator(self):
+        """
+        Is the database being created when the class is created?
+        Author: Jake
+        """
+        statistics = StatisticsCreator("UnitTest")
+        
+        self.assertIsNotNone(statistics.db.conn)
 
     def test_statistics_creator_classdata(self):
         """
@@ -100,8 +148,7 @@ class ModelTestCase(unittest.TestCase):
         statistics = StatisticsCreator("UnitTest")
         statistics.create_tables()
 
-        self.assertEqual(statistics.db.query(
-            """SELECT name FROM sqlite_master WHERE type='table' AND
+        self.assertEqual(statistics.db.query("""SELECT name FROM sqlite_master WHERE type='table' AND 
         name='ClassData';""").fetch()[0]['name'], "ClassData")
 
     def test_statistics_creator_insert_class(self):
@@ -109,20 +156,65 @@ class ModelTestCase(unittest.TestCase):
         Can class data be inserted into the database?
         Author: Jake
         """
-        classdata = ClassData("TestName", 1, 2)
+        classnode = ClassNode("TestName")
+        classnode.add_attribute("AttributeOne", "+")
+        classnode.add_function("FunctionOne", "AParameter", "+")
+
         statistics = StatisticsCreator("UnitTest")
-        statistics.insert_class(classdata)
-        result = statistics.db.query(
-            """SELECT className FROM ClassData WHERE className='TestName'""")
+        statistics.create_tables()
+        statistics.insert_class(classnode)
+        result = statistics.db.query("""SELECT className FROM ClassData WHERE className='TestName'""")
 
         self.assertEqual(result.fetch()[0]['className'], "TestName")
 
     def test_statistics_creator_retrieve_class(self):
-        classdata = ClassData("TestName", 1, 2)
+        """
+        Can class data be fetched from the database?
+        Author: Jake
+        """
+        classnode = ClassNode("TestName")
+        classnode.add_attribute("AttributeOne", "+")
+        classnode.add_function("FunctionOne", "AParameter", "+")
+
         statistics = StatisticsCreator("UnitTest")
-        statistics.insert_class(classdata)
+        statistics.create_tables()
+        statistics.insert_class(classnode)
 
         self.assertEqual(statistics.get_class_data()[0].class_name, 'TestName')
+
+    """
+    Tests for 'python_controller.py'
+    """
+
+    def test_cmd_enable_statistics(self):
+        """
+        Is statisitcs collection enabled when the enable_statistics command is called?
+        Author: Jake
+        """
+        controller = Controller()
+        controller.do_enable_statistics("")
+
+        self.assertIsNotNone(controller.statistics)
+
+    def test_cmd_set_input_file(self):
+        """
+        Can you select a file from a file selector gui?
+        Author: Jake
+        """
+        controller = Controller()
+        controller.do_set_input_file("")
+
+        self.assertIsNotNone(controller.files)
+
+    def test_cmd_set_input_file_args(self):
+        """
+        Can you select a file from command arguments?
+        Author: Jake
+        """
+        controller = Controller()
+        controller.do_set_input_file("plants.py")
+
+        self.assertEqual(controller.files, ["plants.py"])
 
 
 if __name__ == '__main__':
