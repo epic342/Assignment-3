@@ -126,13 +126,16 @@ class Controller(Cmd):
         """
         if len(args) == 0:
             root = Tk()
-            root.filename = filedialog.askopenfilename(initialdir="C:/", title="Select Input File",
+            self.files = filedialog.askopenfilenames(initialdir="C:/", title="Select Input File",
                                                        filetypes=(("Python Files", "*.py"), ("all files", "*.*")))
-            self.args = root.filename
             root.withdraw()
         else:
-            self.args = args
-        print("Input file selected \"" + self.args + "\"")
+            self.files = args
+        if self.files == "":
+            print("No input file selected.")
+        else:
+            print("Input file selected:")
+            print(*self.files, sep="\n")
         
     # Created by Michael Huang
     def do_output_to_file(self, args):
