@@ -48,7 +48,7 @@ class database:
             return database_result(self, query_resource)
         except sqlite3.OperationalError as err:
             raise SQLError(err)
-        except BaseException:
+        except:
             print("Query Failed: An unexpected exception")
 
     # Written by Jake Reddock
