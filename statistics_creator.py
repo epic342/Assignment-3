@@ -21,21 +21,23 @@ class StatisticsCreator:
                           class_node.name + "'," +
                           str(len(class_node.attributes)) + "," +
                           str(len(class_node.functions)) + ");")
-        except SQLError as e:
+        except sql.SQLError as e:
             print(e)
 
     def insert_class(self, class_node):
-        
+        try:
         self.db.query("INSERT INTO ClassData VALUES(null,'" +
                           class_node.class_name + "'," +
                           str(class_node.attribute_count) + "," +
                           str(class_node.method_count) + ");")
-
+        except sql.SQLError as e:
+            print(e)
+            
     def get_class_data(self):
         class_data_list = []
         try:
             result = self.db.query("SELECT className,attributeCount,methodCount from ClassData").fetch()
-        except SQLError as e:
+        except sql.SQLError as e:
             print(e)
         for row in result:
             class_name = row['className']
