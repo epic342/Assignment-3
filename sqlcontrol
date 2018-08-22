@@ -11,11 +11,9 @@ def dict_factory(cursor, row):
 class MyDatabase:
     def __init__(self, name):
         self.name = name
-        self.conn = mysql.connector.connect(
-                                            host='localhost',
+        self.conn = mysql.connector.connect(host='localhost',
                                             user='root',
-                                            password=''
-        )
+                                            password='')
 
     # Written by Michael Huang
 
@@ -54,7 +52,6 @@ class MyDatabase:
             print(err)
             return False
 
-    # Written by Jake Reddock
     def close(self):
         """Close the connection to the database
         """
@@ -81,11 +78,9 @@ class mysql_result:
         self.mydatabase = mydatabase
         self.query = query
 
-    # Written By Jake Reddock
     def size(self):
         return len(self.query)
 
-    # Written By Jake Reddock
     def fetch(self):
         return self.query
 
