@@ -16,9 +16,9 @@ class ClassNode:
 
     >>> ClassNode("Class One", []).name
     'Class One'
-    >>> class_one = ClassNode("Class One", [])
-    >>> class_one.add_attribute("Attribute One")
-    >>> class_one.add_attribute("Attribute Two")
+    >>> class_one = ClassNode("Class One")
+    >>> class_one.add_attribute("Attribute One", "+")
+    >>> class_one.add_attribute("Attribute Two", "+")
     >>> len(class_one.attributes)
     2
     """
@@ -46,7 +46,7 @@ class AttributeNode:
     Attribute object containing attribute name
     Author: Braeden
 
-    >>> AttributeNode("Attribute One").name
+    >>> AttributeNode("Attribute One", "+").name
     'Attribute One'
     """
     def __init__(self, name, visibility):
@@ -59,9 +59,9 @@ class FunctionNode:
     Function object containing function name and parameters
     Author: Braeden
 
-    >>> FunctionNode("Function One", []).get_name()
+    >>> FunctionNode("Function One", [], "+").get_name()
     'Function One'
-    >>> len(FunctionNode("Function One", ["Param One", "Param Two"]).parameters)
+    >>> len(FunctionNode("Function One", ["Param One", "Param Two"], "+").parameters)
     2
     """
     def __init__(self, name, list_of_parameters, visibility):
@@ -90,10 +90,9 @@ class FileProcessor:
         """
         Loop through a list of files, and process each file as an individual
         Author: Braeden
-
         >>> fp.process_files(["plants.py"])
         1
-        >>> fp.process_files(["plants.py", "plants2.py"])
+        >>> fp.process_files(["plants.py", "LinkedListNode.py"])
         2
         """
         for file in file_names:
@@ -115,6 +114,8 @@ class FileProcessor:
             print("A file with this name could not be found, please try again.")
         except OSError:
             print("The provided python file contains invalid syntax, please fix the provided code before running")
+        except:
+            print("Query Failed: An unexpected exception")
 
     def process_module(self, module):
         # Find any classes that exists within this module
@@ -182,7 +183,16 @@ class FileProcessor:
         return self.modules
 
     def get_visibility_of_string(self, string):
-        # get visibility of function (public = +, protected = #, private = -)
+        """
+        get visibility of function (public = +, protected = #, private = -)
+        Author: Braeden
+        >>> FileProcessor().get_visibility_of_string("test")
+        '+'
+        >>> FileProcessor().get_visibility_of_string("__test")
+        '-'
+        >>> FileProcessor().get_visibility_of_string("_test")
+        '#'
+        """
         visibility = "+"
         if string[:2] == "__":
             visibility = "-"
