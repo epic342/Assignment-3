@@ -8,6 +8,7 @@ import python_controller as pc
 
 def initiate_python_parser():
     controller = pc.Controller()
+    controller.run_console()
     # controller.run_parser(command_line_args, True, True)
 
 
