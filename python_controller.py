@@ -104,7 +104,7 @@ class Controller(Cmd):
         """
         user_args = args.split()
         if len(user_args) > 0:
-            self.args = args.split()
+            self.files = [args]
         else:
             print("Syntax Error: change_python_files <filenames.py>")
 
