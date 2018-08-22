@@ -19,6 +19,20 @@ def dict_factory(cursor, row):
 
 
 class database:
+    """
+    Database object containing attribute and functions
+    Author: Jake
+
+    >>> db = database("DocTest")
+    >>> db.db_name
+    'DocTest'
+    >>> db.query('CREATE TABLE IF NOT EXISTS TestTable (id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT)').fetch()
+    []
+    >>> db.query('SELECT data FROM TestTable WHERE id=1').fetch()[0]['data']
+    'TestName'
+    >>> db.query('SELECT data FROM TestTable WHERE id=1').size()
+    1
+    """
     def __init__(self, db_name):
         self.db_name = db_name
         self.conn = sqlite3.connect(db_name + '.db')
@@ -48,6 +62,18 @@ class database:
 
 
 class database_result:
+    """
+    Database Result object containing attributes and functions
+    Author: Jake
+
+    >>> database = database("DocTest")
+    >>> query = database.conn.cursor().execute('SELECT data FROM TestTable WHERE id=1').fetchall()
+    >>> database_result(database, query).size()
+    1
+    >>> database = database("DocTest")
+    >>> query = database.conn.cursor().execute('SELECT data FROM TestTable WHERE id=1').fetchall()
+    >>> database_result(database, query).fetch()[0]
+    """
     def __init__(self, database, query):
         self.database = database
         self.query = query
