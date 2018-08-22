@@ -130,7 +130,7 @@ class FileProcessor:
         except OSError:
             print("The provided python file contains invalid syntax, "
                   "please fix the provided code before running")
-        except BaseException:
+        except:
             print("Query Failed: An unexpected exception")
 
     def process_module(self, module):
