@@ -180,7 +180,7 @@ class Controller(Cmd):
             except FileNotFoundError as f:
                 print('Failed to find a file: %s' % f)
                 print('Please specify a valid file path.')
-            except BaseException:
+            except:
                 print('Unexpected error has occurred.')
 
     @staticmethod
