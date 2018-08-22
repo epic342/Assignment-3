@@ -1,5 +1,6 @@
 import py_compile
 
+
 class CodeValidator:
     """
     Class to validate files before parsing
@@ -20,14 +21,13 @@ class CodeValidator:
     def validate_files(self, filename_list):
         validated_files = []
         for filename in filename_list:
-            if self.validate_file(filename) == True:
+            if self.validate_file(filename):
                 validated_files.append(filename)
         return validated_files
-        
 
     def validate_file(self, filename):
         try:
-            py_compile.compile(file = filename, doraise=True)
+            py_compile.compile(file=filename, doraise=True)
             print('{} successfully validated'.format(filename))
             return True
         except py_compile.PyCompileError as err:
@@ -39,13 +39,12 @@ class CodeValidator:
         except SyntaxError as err:
             print('{} is not a valid python file. {}'.format(filename, err))
             return False
-        except:
+        except BaseException:
             print('Unknown exception. Could not validate file: {}. Please check that information has been correctly provided and that file is present in specified directory'.format(filename))
             return False
 
 
-
-if __name__ =='__main__':
+if __name__ == '__main__':
     import doctest
     doctest.testmod()
     doctest.testmod(verbose=True)

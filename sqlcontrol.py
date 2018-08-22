@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -7,6 +8,7 @@ def dict_factory(cursor, row):
     return d
 
 # Written by Michael Huang
+
 
 class MyDatabase:
     def __init__(self, name):
@@ -73,6 +75,8 @@ class MyDatabase:
             return False
 
 # Written By Michael Huang
+
+
 class mysql_result:
     def __init__(self, mydatabase, query):
         self.mydatabase = mydatabase
@@ -83,6 +87,7 @@ class mysql_result:
 
     def fetch(self):
         return self.query
+
 
 # Written By Michael Huang
 if __name__ == '__main__':
@@ -96,9 +101,10 @@ lname VARCHAR(30),
 gender CHAR(1),
 birth_date DATE);""")
 
-    db.query("""INSERT INTO employee VALUES (null, "Frank", "Schiller", "m", "1955-08-17")""")
+    db.query(
+        """INSERT INTO employee VALUES (null, "Frank", "Schiller", "m", "1955-08-17")""")
     result = db.query("""SELECT fname FROM employee""").fetch()
     print(result)
     print(db.query("""SELECT * FROM employee""").size())
     for row in result:
-       print(row[0])
+        print(row[0])

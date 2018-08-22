@@ -8,13 +8,16 @@ class SQLError(Exception):
     def __str__(self):
         return "Query Failed: %s" % self.error_message
 
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
 
-#Written By Jake Reddock
+# Written By Jake Reddock
+
+
 class database:
     def __init__(self, db_name):
         self.db_name = db_name
@@ -31,7 +34,7 @@ class database:
             return database_result(self, query_resource)
         except sqlite3.OperationalError as err:
             raise SQLError(err)
-        except:
+        except BaseException:
             print("Query Failed: An unexpected exception")
 
     # Written by Jake Reddock
@@ -39,9 +42,11 @@ class database:
         """
         Close the connection to the database
         """
-        self.conn.close()  
-            
+        self.conn.close()
+
 # Written By Jake Reddock
+
+
 class database_result:
     def __init__(self, database, query):
         self.database = database
@@ -67,7 +72,7 @@ lname VARCHAR(30),
 gender CHAR(1),
 birth_date DATE);""")
 
-    db.query("""INSERT INTO employee 
+    db.query("""INSERT INTO employee
     VALUES (NULL, "Frank", "Schiller", "m", "1955-08-17")""")
     result = db.query("""SELECT * FROM employee""").fetch()
     print(db.query("""SELECT * FROM employee""").size())

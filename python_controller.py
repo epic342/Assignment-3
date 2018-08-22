@@ -22,33 +22,44 @@ class Controller(Cmd):
         self.args = self.register_arguments()
         self.parse_arguments()
         self.prompt = '> '
-        
-    #Created By Jake
+
+    # Created By Jake
     def run_console(self):
         self.cmdloop('Starting prompt...\n'
-                           'Type "help" for commands')
+                     'Type "help" for commands')
 
-    #Created by Jake
+    # Created by Jake
     def register_arguments(self):
-        #Create your commands in here
+        # Create your commands in here
         parser = argparse.ArgumentParser()
-        #Created by Braeden
-        parser.add_argument("-f", "--file", nargs="+", help="Multiple file input for parse")
+        # Created by Braeden
+        parser.add_argument(
+            "-f",
+            "--file",
+            nargs="+",
+            help="Multiple file input for parse")
         # Created By Jake Reddock
-        parser.add_argument("-s", "--statistics", action='store_true', help="Print Statistics for classes uploaded")
+        parser.add_argument(
+            "-s",
+            "--statistics",
+            action='store_true',
+            help="Print Statistics for classes uploaded")
         # Created By Michael Huang
-        parser.add_argument("-o", "--output", help="Setting name of the output location")
+        parser.add_argument(
+            "-o",
+            "--output",
+            help="Setting name of the output location")
         return parser.parse_args()
 
     # Created By Jake Reddock
     def parse_arguments(self):
-        #Create Logic for your arguments here
-        #Created by Jake
+        # Create Logic for your arguments here
+        # Created by Jake
         if self.args.statistics:
             self.statistics = StatisticsCreator("statistics")
-            self.statistics.create_tables();
+            self.statistics.create_tables()
             print("Statistics collecting is turned on")
-        #Created by Braeden
+        # Created by Braeden
         if self.args.file is not None:
             self.files = self.args.file
             print("Files selected: ")
@@ -57,15 +68,15 @@ class Controller(Cmd):
         if self.args.output is not None:
             self.output = self.args.output
             print("Now setting names of output files")
-            
-    def do_enable_statistics(self,args):
+
+    def do_enable_statistics(self, args):
         """
         Enabled statistics collection
         Author: Jake Reddock
         Syntax: enable_statistics
         """
         self.statistics = StatisticsCreator("statistics")
-        self.statistics.create_tables();
+        self.statistics.create_tables()
         print("Statistics collecting is turned on")
 
     def do_show_statistics(self, args):
@@ -82,7 +93,8 @@ class Controller(Cmd):
             else:
                 print("Please run the \"output_to_dot\" to command")
         else:
-            print("Statistics collecting is not enabled, type \"enable_statistics\" to enable")
+            print(
+                "Statistics collecting is not enabled, type \"enable_statistics\" to enable")
 
     def do_change_python_files(self, args):
         """
@@ -95,8 +107,8 @@ class Controller(Cmd):
             self.args = args.split()
         else:
             print("Syntax Error: change_python_files <filenames.py>")
-            
-    #Edited By Jake
+
+    # Edited By Jake
     def do_output_to_dot(self, args):
         """
         Parse and output the file into a UML diagram
@@ -117,7 +129,7 @@ class Controller(Cmd):
                 hide_methods = True
 
         self.run_parser(self, hide_attributes, hide_methods)
-        
+
     def do_set_input_file(self, args):
         """
         Sets the input file that will be converted into a UML diagram.
@@ -126,8 +138,14 @@ class Controller(Cmd):
         """
         if len(args) == 0:
             root = Tk()
-            self.files = filedialog.askopenfilenames(initialdir="C:/", title="Select Input File",
-                                                       filetypes=(("Python Files", "*.py"), ("all files", "*.*")))
+            self.files = filedialog.askopenfilenames(
+                initialdir="C:/",
+                title="Select Input File",
+                filetypes=(
+                    ("Python Files",
+                     "*.py"),
+                    ("all files",
+                     "*.*")))
             root.withdraw()
         else:
             self.files = [args]
@@ -136,7 +154,7 @@ class Controller(Cmd):
         else:
             print("Input file selected:")
             print(*self.files, sep="\n")
-        
+
     # Created by Michael Huang
     def do_output_to_file(self, args):
         """
@@ -148,7 +166,7 @@ class Controller(Cmd):
 
         from shutil import copyfile
         if len(args) == 0:
-            
+
             root = Tk()
             root.filename = filedialog.askdirectory()
             print(root.filename)
@@ -162,10 +180,9 @@ class Controller(Cmd):
             except FileNotFoundError as f:
                 print('Failed to find a file: %s' % f)
                 print('Please specify a valid file path.')
-            except:
+            except BaseException:
                 print('Unexpected error has occurred.')
-        
-        
+
     @staticmethod
     def do_output_to_png(args):
         """
@@ -173,8 +190,8 @@ class Controller(Cmd):
         Author: Braeden
         """
         return call(['dot', '-Tpng', 'tmp/class.dot', '-o', 'tmp/class.png'])
-    
-    #Edited by Jake
+
+    # Edited by Jake
     @staticmethod
     def run_parser(self, hide_attributes, hide_methods):
         if len(self.files) > 0:
@@ -199,9 +216,10 @@ class Controller(Cmd):
             files.append(args)
         elif type(args) == list:
             files = args
-        
+
         check_code = validate.CodeValidator()
         validated_file = check_code.validate_files(files)
+
     def do_save_to_csv(self, params):
         '''
         Saves specified file to csv.
@@ -224,8 +242,8 @@ class Controller(Cmd):
             fileprocessor.process_files(input_file)
             modules = fileprocessor.get_modules()
             # print(modules)
-            csv_writer = csv.CSV_handler() 
-            if csv_writer.write_csv_file(modules, output_file) == True:
+            csv_writer = csv.CSV_handler()
+            if csv_writer.write_csv_file(modules, output_file):
                 print('File successfully saved as {}'.format(output_file))
 
     def do_load_csv_for_uml(self, params):
@@ -244,10 +262,11 @@ class Controller(Cmd):
             csvloader = csv.CSV_handler()
             module = csvloader.open_file(input_file)
             makediagram = uml_out.MakeUML(True, True)
-            if makediagram.create_class_diagram(module) == True:
-                print("{} successfully converted to UML class diagram".format(input_file))
+            if makediagram.create_class_diagram(module):
+                print(
+                    "{} successfully converted to UML class diagram".format(input_file))
 
-    def do_pickle_modules(self, filename = 'plants.py'):
+    def do_pickle_modules(self, filename='plants.py'):
         '''
         Load modules from single file and save them using pickle
         Author: Peter
@@ -267,7 +286,7 @@ class Controller(Cmd):
         '''
         Loads previously saved module using pickle
         Author: Peter
-        
+
         Command:
         load_pickle
         '''

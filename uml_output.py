@@ -65,13 +65,15 @@ class MakeUML:
                         # Attributes Start
                         if not self.hide_attributes:
                             for attr in c.attributes:
-                                write_row(out, attr.visibility + " " + attr.name)
+                                write_row(
+                                    out, attr.visibility + " " + attr.name)
                         # Attributes End
                         out.write("|")
                         # Functions Start
                         if not self.hide_methods:
                             for func in c.functions:
-                                write_row(out, func.visibility + " " + func.name + "(" + func.get_parameters() +")")
+                                write_row(
+                                    out, func.visibility + " " + func.name + "(" + func.get_parameters() + ")")
 
                         # Functions End
 
@@ -91,10 +93,10 @@ class MakeUML:
                 # draws lines between class boxes
                 for module in modules.values():
                     for c in module:
-                        if c.super_classes != None:
+                        if c.super_classes is not None:
                             for parent in c.super_classes:
                                 line(class_name_to_dot(c.name) + " -> " +
-                                    class_name_to_dot(parent.__name__))
+                                     class_name_to_dot(parent.__name__))
 
                 line("}")
 

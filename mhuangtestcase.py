@@ -70,6 +70,7 @@ class MichaelTest(unittest.TestCase):
         self.assertEqual(query, query2)
         db.close()
 
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
     # import doctest

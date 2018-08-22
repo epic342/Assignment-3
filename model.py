@@ -22,21 +22,23 @@ class ClassNode:
     >>> len(class_one.attributes)
     2
     """
-    def __init__(self, name, super_classes = None):
+
+    def __init__(self, name, super_classes=None):
         self.name = name
         self.attributes = []
         self.functions = []
-        if super_classes == None:
+        if super_classes is None:
             self.super_classes = []
         else:
             self.super_classes = super_classes
-            
+
     def add_attribute(self, attribute_name, visibility):
         self.attributes.append(AttributeNode(attribute_name, visibility))
 
     def add_function(self, function_name, list_of_parameters, visibility):
-        self.functions.append(FunctionNode(function_name, list_of_parameters, visibility))
-        
+        self.functions.append(FunctionNode(function_name,
+                                           list_of_parameters, visibility))
+
     def add_super_class(self, super_class):
         self.super_classes.append(super_class)
 
@@ -49,6 +51,7 @@ class AttributeNode:
     >>> AttributeNode("Attribute One", "+").name
     'Attribute One'
     """
+
     def __init__(self, name, visibility):
         self.name = name
         self.visibility = visibility
@@ -61,9 +64,11 @@ class FunctionNode:
 
     >>> FunctionNode("Function One", [], "+").get_name()
     'Function One'
-    >>> len(FunctionNode("Function One", ["Param One", "Param Two"], "+").parameters)
+    >>> len(FunctionNode("Function One",
+    ... ["Param One", "Param Two"], "+").parameters)
     2
     """
+
     def __init__(self, name, list_of_parameters, visibility):
         self.name = name
         self.parameters = list_of_parameters
@@ -81,7 +86,11 @@ class FileProcessor:
     Process multiple files into class objects ready to be converted into DOT
     Author: Braeden
     """
-    filter_out_attributes = ["__doc__", "__module__", "__dict__", "__weakref__"]
+    filter_out_attributes = [
+        "__doc__",
+        "__module__",
+        "__dict__",
+        "__weakref__"]
 
     def __init__(self):
         self.modules = dict()
@@ -102,7 +111,13 @@ class FileProcessor:
     def process_file(self, file_name):
         # Import specified file_name and store as module
         path, file = os.path.split(file_name)
-        module_name = file.replace("./", "").replace(".py", "").replace("/", ".")
+        module_name = file.replace(
+            "./",
+            "").replace(
+            ".py",
+            "").replace(
+            "/",
+            ".")
 
         # change path for import to directory of file
         sys.path.append(path)
@@ -113,8 +128,9 @@ class FileProcessor:
         except ImportError:
             print("A file with this name could not be found, please try again.")
         except OSError:
-            print("The provided python file contains invalid syntax, please fix the provided code before running")
-        except:
+            print("The provided python file contains invalid syntax, "
+                  "please fix the provided code before running")
+        except BaseException:
             print("Query Failed: An unexpected exception")
 
     def process_module(self, module):
@@ -131,7 +147,7 @@ class FileProcessor:
         module_name = some_class.__module__
 
         # create module for current file in global modules list
-        if not module_name in self.modules:
+        if module_name not in self.modules:
             self.modules[module_name] = list()
 
         super_classes = []
@@ -144,7 +160,7 @@ class FileProcessor:
                 if class_object.__name__ not in super_classes_names:
                     super_classes.append(class_object)
                     super_classes_names.append(class_object.__name__)
-        
+
         # create class node and append to current module
         class_node = ClassNode(name, super_classes)
         self.modules[module_name].append(class_node)
@@ -155,23 +171,33 @@ class FileProcessor:
                 # get the class from the functions element
                 function_class = something.__qualname__.split('.')[0]
 
-                # only add function if the current class is the same as the selected functions class
+                # only add function if the current class is the same as the
+                # selected functions class
                 if some_class.__name__ == function_class:
                     # create list of attributes in class with constructor
                     if something.__name__ == "__init__":
                         attributes = something.__code__.co_names
 
                         for attribute in attributes:
-                            self.process_attribute(attribute, class_node, self.get_visibility_of_string(attribute))
+                            self.process_attribute(
+                                attribute, class_node, self.get_visibility_of_string(attribute))
 
-                    self.process_function(something, class_node, self.get_visibility_of_string(something.__name__))
-        #Edited By Jake
+                    self.process_function(
+                        something,
+                        class_node,
+                        self.get_visibility_of_string(
+                            something.__name__))
+        # Edited By Jake
         statistics = StatisticsCreator("statistics")
         statistics.insert_class(class_node)
 
-    def process_function(self, some_function, class_node, visibility):
+    @staticmethod
+    def process_function(some_function, class_node, visibility):
         # Functions are added to the class node with just their title
-        class_node.add_function(some_function.__name__, inspect.getfullargspec(some_function)[0], visibility)
+        class_node.add_function(
+            some_function.__name__,
+            inspect.getfullargspec(some_function)[0],
+            visibility)
 
     def process_attribute(self, attribute_name, class_node, visibility):
         # Attributes are added to the class node with just their name
@@ -182,7 +208,8 @@ class FileProcessor:
     def get_modules(self):
         return self.modules
 
-    def get_visibility_of_string(self, string):
+    @staticmethod
+    def get_visibility_of_string(string):
         """
         get visibility of function (public = +, protected = #, private = -)
         Author: Braeden

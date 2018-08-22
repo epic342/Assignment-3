@@ -17,8 +17,9 @@ class StatisticsCreator:
 
     def create_tables(self):
         try:
-            self.db.query("CREATE TABLE IF NOT EXISTS ClassData (classID INTEGER PRIMARY KEY AUTOINCREMENT, className "
-                          "TEXT, attributeCount INTEGER, methodCount INTEGER);")
+            self.db.query(
+                "CREATE TABLE IF NOT EXISTS ClassData (classID INTEGER PRIMARY KEY AUTOINCREMENT, className "
+                "TEXT, attributeCount INTEGER, methodCount INTEGER);")
         except sql.SQLError as e:
             print(e)
 
@@ -30,18 +31,23 @@ class StatisticsCreator:
                           str(len(class_node.functions)) + ");")
         except sql.SQLError as e:
             print(e)
-            
+
     def get_class_data(self):
         class_data_list = []
         try:
-            result = self.db.query("SELECT className,attributeCount,methodCount from ClassData").fetch()
+            result = self.db.query(
+                "SELECT className,attributeCount,methodCount from ClassData").fetch()
         except sql.SQLError as e:
             print(e)
         for row in result:
             class_name = row['className']
             attribute_count = row['attributeCount']
             method_count = row['methodCount']
-            class_data_list.append(ClassData(class_name, attribute_count, method_count))
+            class_data_list.append(
+                ClassData(
+                    class_name,
+                    attribute_count,
+                    method_count))
         return class_data_list
 
     def show_graph_data(self):

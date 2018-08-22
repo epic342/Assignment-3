@@ -100,7 +100,8 @@ class ModelTestCase(unittest.TestCase):
         statistics = StatisticsCreator("UnitTest")
         statistics.create_tables()
 
-        self.assertEqual(statistics.db.query("""SELECT name FROM sqlite_master WHERE type='table' AND 
+        self.assertEqual(statistics.db.query(
+            """SELECT name FROM sqlite_master WHERE type='table' AND
         name='ClassData';""").fetch()[0]['name'], "ClassData")
 
     def test_statistics_creator_insert_class(self):
@@ -111,7 +112,8 @@ class ModelTestCase(unittest.TestCase):
         classdata = ClassData("TestName", 1, 2)
         statistics = StatisticsCreator("UnitTest")
         statistics.insert_class(classdata)
-        result = statistics.db.query("""SELECT className FROM ClassData WHERE className='TestName'""")
+        result = statistics.db.query(
+            """SELECT className FROM ClassData WHERE className='TestName'""")
 
         self.assertEqual(result.fetch()[0]['className'], "TestName")
 
