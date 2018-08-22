@@ -23,6 +23,10 @@ class MyDatabase:
         """
         Create a database using mysql connector
         Author: Michael Huang
+        
+        >>> db = MyDatabase("office")
+        >>> db.create_database()
+        True    
         """
         c = self.conn.cursor()
         c.execute("DROP DATABASE IF EXISTS " + self.name)
@@ -56,6 +60,11 @@ class MyDatabase:
 
     def close(self):
         """Close the connection to the database
+        >>> db = MyDatabase("office")
+        >>> db.create_database()
+        True
+        >>> db.conn.close()
+        
         """
         self.conn.close()
 
