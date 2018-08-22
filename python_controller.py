@@ -11,7 +11,6 @@ import argparse
 from statistics_creator import StatisticsCreator
 
 
-
 class Controller(Cmd):
     def __init__(self):
         Cmd.__init__(self)
@@ -23,8 +22,11 @@ class Controller(Cmd):
         self.args = self.register_arguments()
         self.parse_arguments()
         self.prompt = '> '
+        
+    #Created By Jake
+    def run_console(self):
         self.cmdloop('Starting prompt...\n'
-                     'Type "help" for commands')
+                           'Type "help" for commands')
 
     #Created by Jake
     def register_arguments(self):
