@@ -28,6 +28,8 @@ class database:
     'DocTest'
     >>> db.query('CREATE TABLE IF NOT EXISTS TestTable (id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT)').fetch()
     []
+    >>> db.query("INSERT INTO TestTable VALUES(NULL,'TestName')").fetch()
+    []
     >>> db.query('SELECT data FROM TestTable WHERE id=1').fetch()[0]['data']
     'TestName'
     >>> db.query('SELECT data FROM TestTable WHERE id=1').size()
@@ -70,9 +72,9 @@ class database_result:
     >>> query = database.conn.cursor().execute('SELECT data FROM TestTable WHERE id=1').fetchall()
     >>> database_result(database, query).size()
     1
-    >>> database = database("DocTest")
     >>> query = database.conn.cursor().execute('SELECT data FROM TestTable WHERE id=1').fetchall()
-    >>> database_result(database, query).fetch()[0]
+    >>> database_result(database, query).fetch()[0][0]
+    'TestName'
     """
     def __init__(self, database, query):
         self.database = database
