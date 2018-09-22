@@ -1,7 +1,9 @@
 import inspect
-import sys
 import os
-from statistics_creator import StatisticsCreator
+import sys
+
+from src.database.statistics_creator import StatisticsCreator
+
 
 ##########################################
 # Initial helper classes to store information while the parser

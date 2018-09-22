@@ -1,5 +1,6 @@
-import sql
 import plotly
+
+from src.database import sql
 
 
 # By Jake Reddock
@@ -31,7 +32,7 @@ class StatisticsCreator:
     True
     >>> statistics = StatisticsCreator("DocTest")
     >>> statistics.create_tables()
-    >>> from model import ClassNode
+    >>> from src.model import ClassNode
     >>> classnode = ClassNode("TestName")
     >>> classnode.add_attribute("AttributeOne","+")
     >>> classnode.add_function("MethodOne","ParameterOne","+")

@@ -1,11 +1,9 @@
 import unittest
-import model
-import python_controller
-import os
+
 import csv_plugin
+import model
 import python_code_validator as py_cv
-import uml_output
-import sys
+import python_controller
 
 
 class ModelTestCase(unittest.TestCase):

@@ -1,9 +1,11 @@
-import unittest
-import sql
-from statistics_creator import ClassData, StatisticsCreator
-from model import ClassNode
-from python_controller import Controller
 import os
+import unittest
+
+import sql
+from python_controller import Controller
+from statistics_creator import ClassData, StatisticsCreator
+
+from src.model import ClassNode
 
 
 class ModelTestCase(unittest.TestCase):

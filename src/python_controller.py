@@ -1,14 +1,15 @@
-from tkinter import filedialog, Tk
-
-import model
-import uml_output as uml_out
-import python_code_validator as validate
-import csv_plugin as csv
-import pickle_modules
+import argparse
 from cmd import Cmd
 from subprocess import call
-import argparse
+from tkinter import filedialog, Tk
+
+import csv_plugin as csv
+import model
+import pickle_modules
+import python_code_validator as validate
 from statistics_creator import StatisticsCreator
+
+from src.output import uml_output as uml_out
 
 
 class Controller(Cmd):
