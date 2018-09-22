@@ -1,5 +1,7 @@
 import inspect
 import sys
+import os
+from statistics_creator import StatisticsCreator
 
 ##########################################
 # Initial helper classes to store information while the parser
@@ -7,31 +9,70 @@ import sys
 
 
 class ClassNode:
-    """Class object containing attributes and functions"""
-    def __init__(self, name, super_classes):
+    """
+    Class object containing attributes and functions
+    Author: Braeden
+    Contributor: Peter
+
+    >>> ClassNode("Class One", []).name
+    'Class One'
+    >>> class_one = ClassNode("Class One")
+    >>> class_one.add_attribute("Attribute One", "+")
+    >>> class_one.add_attribute("Attribute Two", "+")
+    >>> len(class_one.attributes)
+    2
+    """
+
+    def __init__(self, name, super_classes=None):
         self.name = name
         self.attributes = []
         self.functions = []
-        self.super_classes = super_classes
+        if super_classes is None:
+            self.super_classes = []
+        else:
+            self.super_classes = super_classes
 
-    def add_attribute(self, attribute_name):
-        self.attributes.append(AttributeNode(attribute_name))
+    def add_attribute(self, attribute_name, visibility):
+        self.attributes.append(AttributeNode(attribute_name, visibility))
 
-    def add_function(self, function_name, list_of_parameters):
-        self.functions.append(FunctionNode(function_name, list_of_parameters))
+    def add_function(self, function_name, list_of_parameters, visibility):
+        self.functions.append(FunctionNode(function_name,
+                                           list_of_parameters, visibility))
+
+    def add_super_class(self, super_class):
+        self.super_classes.append(super_class)
 
 
 class AttributeNode:
-    """Attribute object containing attribute name"""
-    def __init__(self, name):
+    """
+    Attribute object containing attribute name
+    Author: Braeden
+
+    >>> AttributeNode("Attribute One", "+").name
+    'Attribute One'
+    """
+
+    def __init__(self, name, visibility):
         self.name = name
+        self.visibility = visibility
 
 
 class FunctionNode:
-    """Function object containing function name and parameters"""
-    def __init__(self, name, list_of_parameters):
+    """
+    Function object containing function name and parameters
+    Author: Braeden
+
+    >>> FunctionNode("Function One", [], "+").get_name()
+    'Function One'
+    >>> len(FunctionNode("Function One",
+    ... ["Param One", "Param Two"], "+").parameters)
+    2
+    """
+
+    def __init__(self, name, list_of_parameters, visibility):
         self.name = name
         self.parameters = list_of_parameters
+        self.visibility = visibility
 
     def get_name(self):
         return self.name
@@ -41,28 +82,56 @@ class FunctionNode:
 
 
 class FileProcessor:
-    """Process multiple files into class objects ready to be converted into DOT"""
-    filter_out_attributes = ["__doc__", "__module__", "__dict__", "__weakref__"]
+    """
+    Process multiple files into class objects ready to be converted into DOT
+    Author: Braeden
+    """
+    filter_out_attributes = [
+        "__doc__",
+        "__module__",
+        "__dict__",
+        "__weakref__"]
 
     def __init__(self):
         self.modules = dict()
 
-    def process_files(self, file_names = 'plants.py'):
-        # Loop through a list of files, and process each file as an individual
-        for file in file_names:
-            self.process_file(file)
-        return self.modules
-
     def process_files(self, file_names):
-        # Loop through a list of files, and process each file as an individual
+        """
+        Loop through a list of files, and process each file as an individual
+        Author: Braeden
+        >>> fp.process_files(["plants.py"])
+        1
+        >>> fp.process_files(["plants.py", "LinkedListNode.py"])
+        2
+        """
         for file in file_names:
             self.process_file(file)
+        return len(self.modules)
 
     def process_file(self, file_name):
         # Import specified file_name and store as module
-        module_name = file_name.replace("./", "").replace(".py", "").replace("/", ".")
-        __import__(module_name, locals(), globals())
-        self.process_module(sys.modules[module_name])
+        path, file = os.path.split(file_name)
+        module_name = file.replace(
+            "./",
+            "").replace(
+            ".py",
+            "").replace(
+            "/",
+            ".")
+
+        # change path for import to directory of file
+        sys.path.append(path)
+
+        try:
+            __import__(module_name, locals(), globals())
+            self.process_module(sys.modules[module_name])
+        except ImportError:
+            print("A file with this name could not be found, please try again.")
+        except OSError:
+            print("The provided python file contains invalid syntax, "
+                  "please fix the provided code before running")
+        except:
+            print("Query Failed: An unexpected exception")
 
     def process_module(self, module):
         # Find any classes that exists within this module
@@ -78,7 +147,7 @@ class FileProcessor:
         module_name = some_class.__module__
 
         # create module for current file in global modules list
-        if not module_name in self.modules:
+        if module_name not in self.modules:
             self.modules[module_name] = list()
 
         super_classes = []
@@ -91,7 +160,7 @@ class FileProcessor:
                 if class_object.__name__ not in super_classes_names:
                     super_classes.append(class_object)
                     super_classes_names.append(class_object.__name__)
-        
+
         # create class node and append to current module
         class_node = ClassNode(name, super_classes)
         self.modules[module_name].append(class_node)
@@ -102,28 +171,63 @@ class FileProcessor:
                 # get the class from the functions element
                 function_class = something.__qualname__.split('.')[0]
 
-                # only add function if the current class is the same as the selected functions class
+                # only add function if the current class is the same as the
+                # selected functions class
                 if some_class.__name__ == function_class:
                     # create list of attributes in class with constructor
                     if something.__name__ == "__init__":
-                        for key in some_class().__dict__.keys():
-                            self.process_attribute(key, class_node)
-                        # for (attr, something_attr) in inspect.getmembers(some_class.__new__(some_class)):
-                        #    if not callable(something_attr):
-                        #        self.process_attribute(attr, class_node)
+                        attributes = something.__code__.co_names
 
-                    self.process_function(something, class_node)
+                        for attribute in attributes:
+                            self.process_attribute(
+                                attribute, class_node, self.get_visibility_of_string(attribute))
 
-    def process_function(self, some_function, class_node):
+                    self.process_function(
+                        something,
+                        class_node,
+                        self.get_visibility_of_string(
+                            something.__name__))
+        # Edited By Jake
+        statistics = StatisticsCreator("statistics")
+        statistics.insert_class(class_node)
+
+    @staticmethod
+    def process_function(some_function, class_node, visibility):
         # Functions are added to the class node with just their title
-        class_node.add_function(some_function.__name__, inspect.getfullargspec(some_function)[0])
+        class_node.add_function(
+            some_function.__name__,
+            inspect.getfullargspec(some_function)[0],
+            visibility)
 
-    def process_attribute(self, attribute_name, class_node):
+    def process_attribute(self, attribute_name, class_node, visibility):
         # Attributes are added to the class node with just their name
         # filter out __module__, __doc__
         if attribute_name not in self.filter_out_attributes:
-            class_node.add_attribute(attribute_name)
+            class_node.add_attribute(attribute_name, visibility)
 
     def get_modules(self):
         return self.modules
 
+    @staticmethod
+    def get_visibility_of_string(string):
+        """
+        get visibility of function (public = +, protected = #, private = -)
+        Author: Braeden
+        >>> FileProcessor().get_visibility_of_string("test")
+        '+'
+        >>> FileProcessor().get_visibility_of_string("__test")
+        '-'
+        >>> FileProcessor().get_visibility_of_string("_test")
+        '#'
+        """
+        visibility = "+"
+        if string[:2] == "__":
+            visibility = "-"
+        elif string[0] == "_":
+            visibility = "#"
+        return visibility
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(extraglobs={'fp': FileProcessor()})
