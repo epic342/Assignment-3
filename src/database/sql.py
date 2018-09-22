@@ -37,7 +37,7 @@ class database:
     """
     def __init__(self, db_name):
         self.db_name = db_name
-        self.conn = sqlite3.connect(db_name + '.db')
+        self.conn = sqlite3.connect("../tmp/" + db_name + '.db')
 
     # Written By Jake Reddock
     def query(self, sql):

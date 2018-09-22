@@ -5,7 +5,7 @@ and put them in a format which can then be used for creating a uml diagram.
 
 import csv
 
-import model as model
+from src import model as model, uml_output as uml
 
 __author__ = "Peter Campbell"
 __copyright__ = "Copyright 2018,BCPR301 Class Assignment 1"
@@ -148,8 +148,6 @@ if __name__ == '__main__':
     # print(modules)
     #csvhandler.write_csv_file(modules, outfile)
     #csvhandler.write_csv_file(newmodule, 'myclass.csv')
-
-    from src.output import uml_output as uml
 
     makediagram = uml.MakeUML(True, True)
     # makediagram.create_class_diagram(newmodule)

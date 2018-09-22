@@ -185,7 +185,7 @@ class ModelTestCase(unittest.TestCase):
         self.assertEqual(statistics.get_class_data()[0].class_name, 'TestName')
 
     """
-    Tests for 'python_controller.py'
+    Tests for 'controller.py'
     """
 
     def test_cmd_enable_statistics(self):

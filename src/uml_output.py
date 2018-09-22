@@ -1,5 +1,5 @@
 import os
-
+import sys
 
 class MakeUML:
     """
@@ -12,7 +12,7 @@ class MakeUML:
         self.hide_methods = hide_methods
 
     def create_class_diagram(self, modules):
-        full_path = os.path.realpath(__file__)
+        full_path = os.path.abspath(os.path.join(sys.argv[0], os.pardir))
         path, filename = os.path.split(full_path)
         path = path.replace("\\", "/")
 

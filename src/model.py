@@ -94,8 +94,9 @@ class FileProcessor:
         "__dict__",
         "__weakref__"]
 
-    def __init__(self):
+    def __init__(self, statistics):
         self.modules = dict()
+        self.statistics = statistics
 
     def process_files(self, file_names):
         """
@@ -190,8 +191,8 @@ class FileProcessor:
                         self.get_visibility_of_string(
                             something.__name__))
         # Edited By Jake
-        statistics = StatisticsCreator("statistics")
-        statistics.insert_class(class_node)
+        if self.statistics is not None:
+            self.statistics.insert_class(class_node)
 
     @staticmethod
     def process_function(some_function, class_node, visibility):

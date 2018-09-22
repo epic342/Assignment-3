@@ -1,9 +1,9 @@
 import unittest
 
-import csv_plugin
-import model
-import python_code_validator as py_cv
-import python_controller
+from src.output import csv_plugin
+from src.model import model
+from src import python_code_validator as py_cv
+from src import controller
 
 
 class ModelTestCase(unittest.TestCase):
@@ -49,7 +49,7 @@ class ModelTestCase(unittest.TestCase):
         Checks if creation of UML diagram and output to PNG file works
         Author: Braeden
         """
-        ctrl = python_controller.Controller
+        ctrl = controller.Controller
         self.assertTrue(ctrl.do_output_to_png(None) is 0)
 
     def test_file_change(self):
@@ -58,7 +58,7 @@ class ModelTestCase(unittest.TestCase):
         arguments can be changed by function
         Author: Braeden
         """
-        ctrl = python_controller.Controller
+        ctrl = controller.Controller
         ctrl.do_change_python_files(ctrl, "file_one.py file_two.py")
 
         self.assertTrue(ctrl.files[0] == "file_one.py")

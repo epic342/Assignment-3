@@ -103,7 +103,7 @@ class StatisticsCreator:
         layout = plotly.graph_objs.Layout(barmode='group')
 
         fig = plotly.graph_objs.Figure(data=data, layout=layout)
-        plotly.offline.plot(fig, filename='grouped-bar.html')
+        plotly.offline.plot(fig, filename='../tmp/grouped-bar.html')
 
 
 if __name__ == '__main__':
