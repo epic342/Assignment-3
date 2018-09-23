@@ -59,11 +59,6 @@ class Controller:
         return True
 
     def set_input_file(self, args):
-        """
-        Sets the input file that will be converted into a UML diagram.
-        Author: Jake Reddock
-        Syntax: set_input_file [file_name]
-        """
         if len(args) == 0:
             root = Tk()
             self.controller.files = filedialog.askopenfilenames(
@@ -87,13 +82,6 @@ class Controller:
 
     # Created by Michael Huang
     def output_to_file(self, args):
-        """
-        Sets the output of the class diagram to a file location.
-        Author: Michael Huang
-        Syntax: output_to_file
-                output_to_file [path]
-        """
-
         if len(args) == 0:
 
             root = Tk()
