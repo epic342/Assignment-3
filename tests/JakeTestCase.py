@@ -1,9 +1,9 @@
 import os
 import unittest
 
-import sql
-from python_controller import Controller
-from statistics_creator import ClassData, StatisticsCreator
+from src.database import sql
+from src.command_interpreter import CommandLine
+from src.database.statistics_creator import ClassData, StatisticsCreator
 
 from src.model import ClassNode
 
@@ -193,7 +193,7 @@ class ModelTestCase(unittest.TestCase):
         Is statisitcs collection enabled when the enable_statistics command is called?
         Author: Jake
         """
-        controller = Controller()
+        controller = CommandLine()
         controller.do_enable_statistics("")
 
         self.assertIsNotNone(controller.statistics)
@@ -203,7 +203,7 @@ class ModelTestCase(unittest.TestCase):
         Can you select a file from a file selector gui?
         Author: Jake
         """
-        controller = Controller()
+        controller = CommandLine()
         controller.do_set_input_file("")
 
         self.assertIsNotNone(controller.files)
@@ -213,7 +213,7 @@ class ModelTestCase(unittest.TestCase):
         Can you select a file from command arguments?
         Author: Jake
         """
-        controller = Controller()
+        controller = CommandLine()
         controller.do_set_input_file("plants.py")
 
         self.assertEqual(controller.files, ["plants.py"])

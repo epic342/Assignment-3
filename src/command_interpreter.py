@@ -20,6 +20,10 @@ class CommandLine(Cmd):
         self.cmdloop('Starting prompt...\n'
                      'Type "help" for commands')
 
+    def create_statistics(self, args):
+        self.statistics = StatisticsCreator("statistics")
+        self.statistics.create_tables()
+
     def register_arguments(self):
         parser = argparse.ArgumentParser()
         parser.add_argument(
@@ -40,15 +44,13 @@ class CommandLine(Cmd):
 
     def parse_arguments(self):
         if self.args.statistics:
-            self.statistics = StatisticsCreator("statistics")
-            self.statistics.create_tables()
-            print("Statistics collecting is turned on")
-        # Created by Braeden
+            self.create_statistics("statistics")
+
         if self.args.file is not None:
             self.files = self.args.file
             print("Files selected: ")
             print(*self.files, sep="\n")
-        # Created by Michael Huang
+
         if self.args.output is not None:
             self.output = self.args.output
             print("Now setting names of output files")
@@ -60,9 +62,9 @@ class CommandLine(Cmd):
         Syntax: enable_statistics
         """
         if self.controller.enable_statistics(args):
-            print("Enabled statistics")
+            print("{}: {}".format("Success", "Statistics collecting is turned on."))
         else:
-            print("Statistics pls")
+            print("{}: {}".format("Error.", "Statistics collecting was not turned on."))
 
     def do_show_statistics(self, args):
         """
@@ -72,9 +74,10 @@ class CommandLine(Cmd):
         Requires: enable_statistics, output_to_dot
         """
         if self.controller.show_statistics(args):
-            print("Showing statistics")
+            print("Now showing statistics.")
+            print("Creating graph, please wait...")
         else:
-            print("Not showing statistics")
+            print("Failed to show statistics.")
 
     def do_set_input_file(self, args):
         """
@@ -83,15 +86,15 @@ class CommandLine(Cmd):
         Syntax: set_input_file [file_name]
         """
         if self.controller.set_input_file(args):
-            print("You have set the input file.")
+            print("{}: {}".format("Success.", "You have set the input file."))
         else:
-            print("Failed to set an input file.")
+            print("{}: {}".format("Error", "Failed to set an input file."))
 
     def do_output_to_dot(self, args):
         if self.controller.output_to_dot(args):
-            print("You have outputted the file in dot format.")
+            print("{}: {}".format("Success", "You have outputted the file in dot format."))
         else:
-            print("No dot file outputted.")
+            print("{}: {}".format("Error", "Failed to output the file into dot format."))
 
     def do_output_to_file(self, args):
         """
@@ -101,9 +104,9 @@ class CommandLine(Cmd):
                 output_to_file [path]
         """
         if self.controller.output_to_file(args):
-            print("You have successfully copied the file to your desired location.")
+            ("{}: {}".format("Success.", "You have successfully copied the file to your desired location."))
         else:
-            print("Failed to copy the file to your location.")
+            print("{}: {}".format("Error.", "Failed to copy the file to your location."))
 
     def do_output_to_png(self, args):
         """
@@ -111,6 +114,6 @@ class CommandLine(Cmd):
         Author: Braeden
         """
         if self.controller.output_to_png(args) is not None:
-            print("You have successfully outputted the file in png format.")
+            print("{}: {}".format("Success.", "You have successfully outputted the file in png format."))
         else:
-            print("no output to png")
+            print("{}: {}".format("Error", "Failed to output the file into png format."))

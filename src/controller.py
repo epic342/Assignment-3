@@ -15,13 +15,12 @@ class Controller:
         self.controller = controller
 
     def enable_statistics(self, args):
-        self.controller.create_statistics()
+        self.controller.create_statistics(args)
         return True
 
     def show_statistics(self, args):
         if self.controller.statistics is not None:
             if self.controller.extracted_modules is not None:
-                print("Creating graph, please wait...")
                 self.controller.statistics.show_graph_data()
                 return True
             else:
@@ -96,7 +95,7 @@ class Controller:
                 print('The output to the file destination was successful.')
                 return True
             except FileNotFoundError as f:
-                print('Failed to find a file: %s' % f)
+                print("{}: {}".format(f, 'Failed to find a file path.'))
                 print('Please specify a valid file path.')
                 return False
             except:
