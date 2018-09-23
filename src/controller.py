@@ -7,6 +7,7 @@ from src import model, uml_output as uml_out
 from src.database.statistics_creator import StatisticsCreator
 from src.output import csv_plugin as csv
 from src.pickle_modules import PickleModules
+import os
 
 
 class Controller:
@@ -14,9 +15,7 @@ class Controller:
         self.controller = controller
 
     def enable_statistics(self, args):
-        self.controller.statistics = StatisticsCreator("statistics")
-        self.controller.statistics.create_tables()
-        print("Statistics collecting is turned on")
+        self.controller.create_statistics()
         return True
 
     def show_statistics(self, args):
@@ -106,7 +105,9 @@ class Controller:
 
     @staticmethod
     def output_to_png(args):
-        return call(['dot', '-Tpng', '../tmp/class.dot', '-o', '../tmp/class.png'])
+        # TODO Not working
+        os.chdir(os.path.abspath(os.path.join(os.getcwd(), os.pardir)))
+        return call(['dot', '-Tpng', 'tmp/class.dot', '-o', 'tmp/class.png'])
 
     # Edited by Jake
     @staticmethod
