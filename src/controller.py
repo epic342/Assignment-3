@@ -28,7 +28,8 @@ class Controller:
                 return False
         else:
             print(
-                "Statistics collecting is not enabled, type \"enable_statistics\" to enable")
+                "Statistics collecting is not enabled, "
+                "type \"enable_statistics\" to enable")
             return False
 
     def change_python_files(self, args):
@@ -69,7 +70,7 @@ class Controller:
             root.withdraw()
             return True
         else:
-            self.controller.files = [args]
+            self.controller.set_input_file_argument([args])
             return True
 
     def copy_file_to_folder(self, args):
@@ -113,6 +114,7 @@ class Controller:
             return new_uml.create_class_diagram(self.controller.extracted_modules)
         else:
             print("Error: No files were set, use command change_python_files")
+
 
     # def do_validate_py(self, args):
     #     '''

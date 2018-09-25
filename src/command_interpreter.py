@@ -3,6 +3,7 @@ from src import controller
 import argparse
 from src.database.statistics_creator import StatisticsCreator
 
+
 class CommandLine(Cmd):
     def __init__(self):
         Cmd.__init__(self)
@@ -23,6 +24,15 @@ class CommandLine(Cmd):
     def create_statistics(self, args):
         self.statistics = StatisticsCreator("statistics")
         self.statistics.create_tables()
+        print("Now collecting statistics")
+
+    def set_input_file_argument(self, files):
+        self.files = files
+        if not self.files:
+            print("No input file selected.")
+        else:
+            print("Input file selected:")
+            print(*self.files, sep="\n")
 
     def register_arguments(self):
         parser = argparse.ArgumentParser()
@@ -47,9 +57,7 @@ class CommandLine(Cmd):
             self.create_statistics("statistics")
 
         if self.args.file is not None:
-            self.files = self.args.file
-            print("Files selected: ")
-            print(*self.files, sep="\n")
+            self.set_input_file_argument(self.args.file)
 
         if self.args.output is not None:
             self.output = self.args.output
@@ -96,9 +104,8 @@ class CommandLine(Cmd):
         Author: Jake Reddock
         Syntax: set_input_file [file_name]
         """
-        self.controller.set_input_file("plants.py")
         if self.controller.set_input_file(args) is not None:
-            print("{}: {}".format("Success.", "You have set the input file."))
+            print("{}: {}".format("Success", "You have set the input file."))
         else:
             print("{}: {}".format("Error", "Failed to set an input file."))
 
@@ -116,9 +123,9 @@ class CommandLine(Cmd):
                 output_to_file [path]
         """
         if self.controller.copy_file_to_folder(args):
-            ("{}: {}".format("Success.", "You have successfully copied the file to your desired location."))
+            ("{}: {}".format("Success", "You have successfully copied the file to your desired location."))
         else:
-            print("{}: {}".format("Error.", "Failed to copy the file to your location."))
+            print("{}: {}".format("Error", "Failed to copy the file to your location."))
 
     def do_output_to_png(self, args):
         """
@@ -126,6 +133,6 @@ class CommandLine(Cmd):
         Author: Braeden
         """
         if self.controller.output_to_png(args) is not None:
-            print("{}: {}".format("Success.", "You have successfully outputted the file in png format."))
+            print("{}: {}".format("Success", "You have successfully outputted the file in png format."))
         else:
             print("{}: {}".format("Error", "Failed to output the file into png format."))
