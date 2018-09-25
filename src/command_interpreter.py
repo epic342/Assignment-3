@@ -55,6 +55,17 @@ class CommandLine(Cmd):
             self.output = self.args.output
             print("Now setting names of output files")
 
+    def do_change_python_files(self, args):
+        """
+        Change input files that are to be parsed by system
+        Author: Braeden
+        Syntax: change_python_files <filenames.py>
+        """
+        if self.controller.change_python_files(args):
+            print("{}: {}".format("Success", "files have been set"))
+        else:
+            print("{}: {}".format("Error", "change_python_files <filenames.py>"))
+
     def do_enable_statistics(self, args):
         """
         Enabled statistics collection
@@ -85,7 +96,8 @@ class CommandLine(Cmd):
         Author: Jake Reddock
         Syntax: set_input_file [file_name]
         """
-        if self.controller.set_input_file(args):
+        self.controller.set_input_file("plants.py")
+        if self.controller.set_input_file(args) is not None:
             print("{}: {}".format("Success.", "You have set the input file."))
         else:
             print("{}: {}".format("Error", "Failed to set an input file."))
@@ -103,7 +115,7 @@ class CommandLine(Cmd):
         Syntax: output_to_file
                 output_to_file [path]
         """
-        if self.controller.output_to_file(args):
+        if self.controller.copy_file_to_folder(args):
             ("{}: {}".format("Success.", "You have successfully copied the file to your desired location."))
         else:
             print("{}: {}".format("Error.", "Failed to copy the file to your location."))

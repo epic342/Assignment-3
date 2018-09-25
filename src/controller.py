@@ -31,7 +31,6 @@ class Controller:
                 "Statistics collecting is not enabled, type \"enable_statistics\" to enable")
             return False
 
-
     def change_python_files(self, args):
         user_args = args.split()
         if len(user_args) > 0:
@@ -71,15 +70,9 @@ class Controller:
             return True
         else:
             self.controller.files = [args]
-        if not self.controller.files:
-            print("No input file selected.")
-            return False
-        else:
-            print("Input file selected:")
-            print(*self.controller.files, sep="\n")
+            return True
 
-    # Created by Michael Huang
-    def output_to_file(self, args):
+    def copy_file_to_folder(self, args):
         if len(args) == 0:
 
             root = Tk()
@@ -108,11 +101,9 @@ class Controller:
         os.chdir(os.path.abspath(os.path.join(os.getcwd(), os.pardir)))
         return call(['dot', '-Tpng', 'tmp/class.dot', '-o', 'tmp/class.png'])
 
-    # Edited by Jake
     @staticmethod
     def run_parser(self, hide_attributes, hide_methods):
         if len(self.controller.files) > 0:
-            # Initiate processor
             processor = model.FileProcessor(self.controller.statistics)
             processor.process_files(self.controller.files)
 
@@ -209,11 +200,3 @@ class Controller:
     #     '''
     #     pickler = PickleModules()
     #     return pickler.load()
-
-    def do_quit(self, other):
-        '''
-        Quits programme.
-        Author: Peter
-        '''
-        print("Goodbye ......")
-        return True
