@@ -4,11 +4,16 @@ import builtins
 import os
 
 from pathlib import Path
+import src.model as model
 
 from src.command_interpreter import Controller
+from src.database.statistics_creator import StatisticsCreator
 
 
 class RefactorTest(unittest.TestCase):
+    one_file = ["../tmp/plants.py"]
+    multiple_files = ["../tmp/plants.py", "../src/model.py"]
+
     def setUp(self):
         if os.path.exists("RefactorTest.db"):
             os.remove("RefactorTest.db")
@@ -123,6 +128,52 @@ class RefactorTest(unittest.TestCase):
         output = controller.statistics
         self.assertIsNotNone(output)
 
+    """
+    Bad Smell 3 - Long Method
+    Testing the code to see if it will still work after dealing with long methods.
+    """
+
+    def test_process_one_file(self):
+        """
+        Long Method - Test 1
+        Can the model still process a single file?
+        Author: Michael Huang
+        """
+        expected = 1
+        statistics = StatisticsCreator("MyRefactor")
+        statistics.create_tables()
+        file_processor = model.FileProcessor(statistics)
+        processor = file_processor.process_files(self.one_file)
+        output = processor
+        self.assertEqual(expected, output)
+
+    def test_process_multiple_files(self):
+        """
+        Long Method - Test 2
+        Can the model still process multiple files?
+        Author: Michael Huang
+        """
+        expected = 3
+        statistics = StatisticsCreator("MyRefactor")
+        statistics.create_tables()
+        file_processor = model.FileProcessor(statistics)
+        processor = file_processor.process_files(self.multiple_files)
+        output = processor
+        self.assertEqual(expected, output)
+
+    def test_set_input_file(self):
+        """
+        Long Method - Test 3
+        Is it still possible to set the input file after fixing long method?
+        Author: Michael Huang
+        """
+        controller = Controller()
+        test = mock.MagicMock(name='input')
+        test.side_effect = ['set_input_file plants.py', 'quit']
+        builtins.input = test
+        controller.run_console()
+        output = controller.files
+        self.assertIsNotNone(output)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
