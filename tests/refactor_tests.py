@@ -152,7 +152,7 @@ class RefactorTest(unittest.TestCase):
         Can the model still process multiple files?
         Author: Michael Huang
         """
-        expected = 3
+        expected = 2
         statistics = StatisticsCreator("MyRefactor")
         statistics.create_tables()
         file_processor = model.FileProcessor(statistics)
