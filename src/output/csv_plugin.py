@@ -18,7 +18,6 @@ __status__ = "Development"
 
 
 class CSV_handler:
-
     def __init__(self):
         # self.filename = name
         pass
@@ -66,13 +65,13 @@ class CSV_handler:
                 else:
                     modules[module_name].append(newClass)
                     newClass = model.ClassNode(aline[1].strip())
-                #print('class: {}'.format(aline[1]))
+                    # print('class: {}'.format(aline[1]))
             elif aline[0] == 'attributes':
-                #print('attributes: ')
+                # print('attributes: ')
                 loop_counter = 1
                 while loop_counter < len(aline):
                     newClass.add_attribute(aline[loop_counter].strip(), False)
-                    #print(" " + aline[loop_counter])
+                    # print(" " + aline[loop_counter])
                     loop_counter += 1
             elif aline[0] == 'methods':
                 # print('methods:')
@@ -80,15 +79,15 @@ class CSV_handler:
                 while loop_counter < len(aline):
                     newClass.add_function(
                         aline[loop_counter].strip(), 'params', False)
-                    #print(' ' + aline[loop_counter])
+                    # print(' ' + aline[loop_counter])
                     loop_counter += 1
             elif aline[0] == 'super_classes':
                 # print('super_classes:')
                 pass
-                #loop_counter = 1
+                # loop_counter = 1
                 # while loop_counter < len(aline):
                 #    newClass.add_super_class(aline[loop_counter].get_name.strip())
-                #print(' ' + aline[loop_counter])
+                # print(' ' + aline[loop_counter])
                 #    loop_counter += 1
         modules[module_name].append(newClass)
         return modules
@@ -140,14 +139,14 @@ if __name__ == '__main__':
     newmodule = csvhandler.open_file('plants.csv')
     # print(newmodule)
     # print('------------------------------')
-    #doParse = model.FileProcessor()
-    #filenames =["plants.py"]
-    #outfile = filenames[0].replace('.py', '.csv')
+    # doParse = model.FileProcessor()
+    # filenames =["plants.py"]
+    # outfile = filenames[0].replace('.py', '.csv')
     # doParse.process_files(filenames)
-    #modules = doParse.get_modules()
+    # modules = doParse.get_modules()
     # print(modules)
-    #csvhandler.write_csv_file(modules, outfile)
-    #csvhandler.write_csv_file(newmodule, 'myclass.csv')
+    # csvhandler.write_csv_file(modules, outfile)
+    # csvhandler.write_csv_file(newmodule, 'myclass.csv')
 
     makediagram = uml.MakeUML(True, True)
     # makediagram.create_class_diagram(newmodule)

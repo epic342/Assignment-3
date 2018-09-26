@@ -1,13 +1,11 @@
+import os
 from shutil import copyfile
 from subprocess import call
 from tkinter import filedialog, Tk
 
-import src.python_code_validator as validate
 from src import model, uml_output as uml_out
-from src.database.statistics_creator import StatisticsCreator
 from src.output import csv_plugin as csv
 from src.pickle_modules import PickleModules
-import os
 
 
 class DataController:
@@ -115,90 +113,75 @@ class DataController:
         else:
             print("Error: No files were set, use command change_python_files")
 
+    def do_save_to_csv(self, params):
+        '''
+        Saves specified file to csv.
+        [command_line] input_file output_file
+        Author: Peter
+        '''
+        # print(params, type(params))
+        input_file = []
+        if params == '':
+            params = 'plants.py output.csv'
+        args = params.split(' ')
+        # print(args)
+        if len(args) >= 1:
+            input_file.append(args[0])
+            output_file = 'output.csv'
+        if len(args) >= 2:
+            output_file = args[1]
+        if input_file[0].endswith('.py'):
+            fileprocessor = model.FileProcessor()
+            fileprocessor.process_files(input_file)
+            modules = fileprocessor.get_modules()
+            # print(modules)
+            csv_writer = csv.CSV_handler()
+            if csv_writer.write_csv_file(modules, output_file):
+                print('File successfully saved as {}'.format(output_file))
 
-    # def do_validate_py(self, args):
-    #     '''
-    #     Validates a single file as executable python code.
-    #     Author: Peter
-    #     '''
-    #     files = []
-    #     if type(args) == str:
-    #         files.append(args)
-    #     elif type(args) == list:
-    #         files = args
-    #
-    #     check_code = validate.CodeValidator()
-    #     validated_file = check_code.validate_files(files)
-    #
-    # def do_save_to_csv(self, params):
-    #     '''
-    #     Saves specified file to csv.
-    #     [command_line] input_file output_file
-    #     Author: Peter
-    #     '''
-    #     # print(params, type(params))
-    #     input_file = []
-    #     if params == '':
-    #         params = 'plants.py output.csv'
-    #     args = params.split(' ')
-    #     # print(args)
-    #     if len(args) >= 1:
-    #         input_file.append(args[0])
-    #         output_file = 'output.csv'
-    #     if len(args) >= 2:
-    #         output_file = args[1]
-    #     if input_file[0].endswith('.py'):
-    #         fileprocessor = model.FileProcessor()
-    #         fileprocessor.process_files(input_file)
-    #         modules = fileprocessor.get_modules()
-    #         # print(modules)
-    #         csv_writer = csv.CSV_handler()
-    #         if csv_writer.write_csv_file(modules, output_file):
-    #             print('File successfully saved as {}'.format(output_file))
-    #
-    # def do_load_csv_for_uml(self, params):
-    #     '''
-    #     Loads csv file and creates UML diagram
-    #     [command line] [file.csv]
-    #     Author: Peter
-    #     '''
-    #     if params == '':
-    #         params = 'output.csv'
-    #     args = params.split(' ')
-    #     print(args)
-    #     if len(args) >= 1:
-    #         input_file = args[0]
-    #     if input_file.endswith('.csv'):
-    #         csvloader = csv.CSV_handler()
-    #         module = csvloader.open_file(input_file)
-    #         makediagram = uml_out.MakeUML(True, True)
-    #         if makediagram.create_class_diagram(module):
-    #             print(
-    #                 "{} successfully converted to UML class diagram".format(input_file))
-    #
-    # def do_pickle_modules(self, filename='plants.py'):
-    #     '''
-    #     Load modules from single file and save them using pickle
-    #     Author: Peter
-    #
-    #     Command:
-    #     pickle_modules filename
-    #     eg pickle_modules plants.py
-    #     '''
-    #     file = [filename]
-    #     parser = model.FileProcessor()
-    #     parser.process_files(file)
-    #     modules = parser.get_modules()
-    #     pickler = PickleModules()
-    #     return pickler.save(modules)
-    #
-    # def load_pickle(self):
-    #     '''
-    #     Loads previously saved module using pickle
-    #     Author: Peter
-    #
-    #     Command:
-    #     load_pickle
-    #     '''
-    #     pickler = PickleModules()
-    #     return pickler.load()
+    def do_load_csv_for_uml(self, params):
+        '''
+        Loads csv file and creates UML diagram
+        [command line] [file.csv]
+        Author: Peter
+        '''
+        if params == '':
+            params = 'output.csv'
+        args = params.split(' ')
+        print(args)
+        if len(args) >= 1:
+            input_file = args[0]
+        if input_file.endswith('.csv'):
+            csvloader = csv.CSV_handler()
+            module = csvloader.open_file(input_file)
+            makediagram = uml_out.MakeUML(True, True)
+            if makediagram.create_class_diagram(module):
+                print(
+                    "{} successfully converted to UML class diagram".format(input_file))
+
+    def do_pickle_modules(self, filename='plants.py'):
+        '''
+        Load modules from single file and save them using pickle
+        Author: Peter
+
+        Command:
+        pickle_modules filename
+        eg pickle_modules plants.py
+        '''
+        file = [filename]
+        parser = model.FileProcessor()
+        parser.process_files(file)
+        modules = parser.get_modules()
+        pickler = PickleModules()
+        return pickler.save(modules)
+
+    def load_pickle(self):
+        '''
+        Loads previously saved module using pickle
+        Author: Peter
+
+        Command:
+        load_pickle
+        '''
+        pickler = PickleModules()
+        return pickler.load()

@@ -15,8 +15,6 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
 
-# Written By Jake Reddock
-
 
 class database:
     """
@@ -35,11 +33,11 @@ class database:
     >>> db.query('SELECT data FROM TestTable WHERE id=1').size()
     1
     """
+
     def __init__(self, db_name):
         self.db_name = db_name
         self.conn = sqlite3.connect("../tmp/" + db_name + '.db')
 
-    # Written By Jake Reddock
     def query(self, sql):
         try:
             self.conn.row_factory = dict_factory
@@ -53,14 +51,11 @@ class database:
         except:
             print("Query Failed: An unexpected exception")
 
-    # Written by Jake Reddock
     def close(self):
         """
         Close the connection to the database
         """
         self.conn.close()
-
-# Written By Jake Reddock
 
 
 class database_result:
@@ -76,20 +71,18 @@ class database_result:
     >>> database_result(database, query).fetch()[0][0]
     'TestName'
     """
+
     def __init__(self, database, query):
         self.database = database
         self.query = query
 
-    # Written By Jake Reddock
     def size(self):
         return len(self.query)
 
-    # Written By Jake Reddock
     def fetch(self):
         return self.query
 
 
-# Written By Jake Reddock
 if __name__ == '__main__':
     db = database("")
     db.query, db.create_table("""

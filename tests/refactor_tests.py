@@ -1,11 +1,10 @@
-import unittest
-from unittest import mock
 import builtins
 import os
-
+import unittest
 from pathlib import Path
-import src.model as model
+from unittest import mock
 
+import src.model as model
 from src.command_interpreter import Controller
 from src.database.statistics_creator import StatisticsCreator
 
@@ -35,7 +34,7 @@ class RefactorTest(unittest.TestCase):
         """
         controller = Controller()
         test = mock.MagicMock(name='input')
-        test.side_effect = ['set_input_file', 'quit']
+        test.side_effect = ['set_input_file plants.py', 'quit']
         builtins.input = test
         controller.run_console()
         output = controller.files
@@ -95,7 +94,7 @@ class RefactorTest(unittest.TestCase):
         """
         controller = Controller()
         test = mock.MagicMock(name='input')
-        test.side_effect = ['set_input_file', 'quit']
+        test.side_effect = ['set_input_file plants.py', 'quit']
         builtins.input = test
         controller.run_console()
         output = controller.files
@@ -174,6 +173,7 @@ class RefactorTest(unittest.TestCase):
         controller.run_console()
         output = controller.files
         self.assertIsNotNone(output)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -1,6 +1,7 @@
-from cmd import Cmd
-from src import controller
 import argparse
+from cmd import Cmd
+
+from src import controller
 from src.database.statistics_creator import StatisticsCreator
 
 

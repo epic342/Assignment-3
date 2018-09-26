@@ -2,8 +2,6 @@ import inspect
 import os
 import sys
 
-from src.database.statistics_creator import StatisticsCreator
-
 
 ##########################################
 # Initial helper classes to store information while the parser
@@ -162,7 +160,7 @@ class FileProcessor:
         class_node = ClassNode(name, super_classes)
         self.modules[module_name].append(class_node)
         self.get_class_functions(some_class, class_node)
-        # Edited By Jake
+
         if self.statistics is not None:
             self.statistics.insert_class(class_node)
 
@@ -190,8 +188,8 @@ class FileProcessor:
                         self.get_visibility_of_string(
                             something.__name__))
 
-
-    def create_super_class(self, super_classes, super_classes_names, some_class):
+    @staticmethod
+    def create_super_class(super_classes, super_classes_names, some_class):
         for class_object in some_class.__bases__:
             if class_object.__name__ != 'object':
                 if class_object.__name__ not in super_classes_names:
@@ -238,4 +236,5 @@ class FileProcessor:
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod(extraglobs={'fp': FileProcessor()})

@@ -40,11 +40,14 @@ class CodeValidator:
             print('{} is not a valid python file. {}'.format(filename, err))
             return False
         except BaseException:
-            print('Unknown exception. Could not validate file: {}. Please check that information has been correctly provided and that file is present in specified directory'.format(filename))
+            print(
+                'Unknown exception. Could not validate file: {}. Please check that information has been correctly provided and that file is present in specified directory'.format(
+                    filename))
             return False
 
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()
     doctest.testmod(verbose=True)

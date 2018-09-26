@@ -1,6 +1,7 @@
 import os
 import sys
 
+
 class MakeUML:
     """
     Converting modules into a UML class diagram using graphviz
