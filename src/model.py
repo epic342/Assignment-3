@@ -161,7 +161,12 @@ class FileProcessor:
         # create class node and append to current module
         class_node = ClassNode(name, super_classes)
         self.modules[module_name].append(class_node)
+        self.get_class_functions(some_class, class_node)
+        # Edited By Jake
+        if self.statistics is not None:
+            self.statistics.insert_class(class_node)
 
+    def get_class_functions(self, some_class, class_node):
         # create list of functions in class
         for (name, something) in inspect.getmembers(some_class):
             if inspect.ismethod(something) or inspect.isfunction(something):
@@ -184,9 +189,7 @@ class FileProcessor:
                         class_node,
                         self.get_visibility_of_string(
                             something.__name__))
-        # Edited By Jake
-        if self.statistics is not None:
-            self.statistics.insert_class(class_node)
+
 
     def create_super_class(self, super_classes, super_classes_names, some_class):
         for class_object in some_class.__bases__:
