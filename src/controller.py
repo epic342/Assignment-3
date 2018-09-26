@@ -10,7 +10,7 @@ from src.pickle_modules import PickleModules
 import os
 
 
-class Controller:
+class DataController:
     def __init__(self, controller):
         self.controller = controller
 
@@ -98,7 +98,7 @@ class Controller:
 
     @staticmethod
     def output_to_png(args):
-        # TODO Not working
+        # TODO Not working with ARA computers
         os.chdir(os.path.abspath(os.path.join(os.getcwd(), os.pardir)))
         return call(['dot', '-Tpng', 'tmp/class.dot', '-o', 'tmp/class.png'])
 

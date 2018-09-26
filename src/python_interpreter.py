@@ -4,7 +4,7 @@
 from src import command_interpreter as pc
 
 def initiate_python_parser():
-    interpreter = pc.CommandLine()
+    interpreter = pc.Controller()
     interpreter.run_console()
 
     # controller.run_parser(command_line_args, True, True)

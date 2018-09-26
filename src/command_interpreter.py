@@ -4,7 +4,7 @@ import argparse
 from src.database.statistics_creator import StatisticsCreator
 
 
-class CommandLine(Cmd):
+class Controller(Cmd):
     def __init__(self):
         Cmd.__init__(self)
         # Command line argument variables
@@ -14,7 +14,7 @@ class CommandLine(Cmd):
         self.output = None
         self.args = self.register_arguments()
         self.parse_arguments()
-        self.controller = controller.Controller(self)
+        self.controller = controller.DataController(self)
         self.prompt = '> '
 
     def run_console(self):
@@ -136,3 +136,11 @@ class CommandLine(Cmd):
             print("{}: {}".format("Success", "You have successfully outputted the file in png format."))
         else:
             print("{}: {}".format("Error", "Failed to output the file into png format."))
+
+    def do_quit(self, other):
+        '''
+        Quits programme.
+        Author: Peter
+        '''
+        print("Goodbye ......")
+        return True
