@@ -104,7 +104,7 @@ class FileProcessor:
         Author: Braeden
         >>> fp.process_files(["plants.py"])
         1
-        >>> fp.process_files(["plants.py", "LinkedListNode.py"])
+        >>> fp.process_files(["plants.py", "controller.py"])
         2
         """
         for file in file_names:
@@ -156,13 +156,7 @@ class FileProcessor:
         super_classes = []
         super_classes_names = []
 
-        # Only creates class_nodes that have unique name, stops duplicate class_nodes
-        # Strips any random objects, only leaves proper class names
-        for class_object in some_class.__bases__:
-            if class_object.__name__ != 'object':
-                if class_object.__name__ not in super_classes_names:
-                    super_classes.append(class_object)
-                    super_classes_names.append(class_object.__name__)
+        super_classes = self.create_super_class(super_classes, super_classes_names, some_class)
 
         # create class node and append to current module
         class_node = ClassNode(name, super_classes)
@@ -193,6 +187,14 @@ class FileProcessor:
         # Edited By Jake
         if self.statistics is not None:
             self.statistics.insert_class(class_node)
+
+    def create_super_class(self, super_classes, super_classes_names, some_class):
+        for class_object in some_class.__bases__:
+            if class_object.__name__ != 'object':
+                if class_object.__name__ not in super_classes_names:
+                    super_classes.append(class_object)
+                    super_classes_names.append(class_object.__name__)
+        return super_classes
 
     @staticmethod
     def process_function(some_function, class_node, visibility):

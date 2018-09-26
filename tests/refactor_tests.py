@@ -19,6 +19,7 @@ class RefactorTest(unittest.TestCase):
 
     """
     Bad Smell 1 - Large Class
+    Testing the code against the new structure
     """
 
     def test_cmd_set_input_file_args(self):
@@ -38,7 +39,7 @@ class RefactorTest(unittest.TestCase):
     def test_cmd_copy_output_file_args(self):
         """
         Large Class - Test 2
-        Is it still possible to set the input file using command line arguments?
+        Is it still possible to set the output file location using command line arguments?
         Author: Michael Huang
         """
         controller = Controller()
@@ -78,6 +79,7 @@ class RefactorTest(unittest.TestCase):
 
     """
     Bad Smell 2 - Duplicate Code
+    Re-testing the code after fixing the duplicate code.
     """
 
     def test_cmd_set_input_file(self):
@@ -97,7 +99,7 @@ class RefactorTest(unittest.TestCase):
     def test_cmd_copy_output_file(self):
         """
         Duplicate Code - Test 2
-        Is it still possible to set the input file using command line arguments after fixing duplicate code?
+        Is it still possible to set the output file location using command line arguments after fixing duplicate code?
         Author: Michael Huang
         """
         controller = Controller()
