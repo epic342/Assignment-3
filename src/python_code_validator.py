@@ -8,7 +8,7 @@ class CodeValidator:
     >>> validate = CodeValidator()
     >>> result = validate.validate_files(['plants.py','controller.py'])
     plants.py successfully validated
-    LinkedListNode.py successfully validated
+    controller.py successfully validated
     >>> len(result)
     2
     >>> result = validate.validate_file('plants.py')
