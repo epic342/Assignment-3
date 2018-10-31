@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
-class ClassFactory(metaclass=ABCMeta):
 
+class ClassFactory(metaclass=ABCMeta):
     def __init__(self, name, super_classes=None):
         self.name = name
         self.attributes = []

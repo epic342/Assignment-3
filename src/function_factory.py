@@ -2,7 +2,6 @@ from abc import ABCMeta, abstractmethod
 
 
 class FunctionFactory(metaclass=ABCMeta):
-
     def __init__(self, name, list_of_parameters, visibility):
         self.name = name
         self.parameters = list_of_parameters
@@ -15,4 +14,3 @@ class FunctionFactory(metaclass=ABCMeta):
     @abstractmethod
     def get_parameters(self):
         pass
-

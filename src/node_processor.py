@@ -1,8 +1,8 @@
 from src.class_factory import ClassFactory
 from src.function_factory import FunctionFactory
 
-class ClassNode(ClassFactory):
 
+class ClassNode(ClassFactory):
     def add_attribute(self, attribute_name, visibility):
         self.attributes.append(AttributeNode(attribute_name, visibility))
 
@@ -13,8 +13,8 @@ class ClassNode(ClassFactory):
     def add_super_class(self, super_class):
         self.super_classes.append(super_class)
 
-class AttributeNode:
 
+class AttributeNode:
     def __init__(self, name, visibility):
         self.name = name
         self.visibility = visibility
