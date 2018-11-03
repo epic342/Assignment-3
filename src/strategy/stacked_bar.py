@@ -1,7 +1,7 @@
 import plotly
 
 from src.database import sql
-from src.database.statistics_creator import ClassData
+from src.database.class_data import ClassData
 from src.strategy.graph_strategy import AbstractGraphBuilder
 
 
@@ -13,7 +13,7 @@ class StackedGraphCreator(AbstractGraphBuilder):
         self.db.query(
             "CREATE TABLE IF NOT EXISTS ClassData (classID INTEGER PRIMARY KEY AUTOINCREMENT, className "
             "TEXT, attributeCount INTEGER, methodCount INTEGER);")
-        self.db.query("INSERT INTO ClassData VALUES(null,'orange', 2, 3);")
+        self.db.query("INSERT INTO ClassData VALUES(null,'test', 2, 3);")
 
     def insert(self):
         class_data_list = []

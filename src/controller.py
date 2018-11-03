@@ -3,9 +3,9 @@ from shutil import copyfile
 from subprocess import call
 from tkinter import filedialog, Tk
 
-import src.database.bar_graph as bardisplay
-import src.database.graph_strategy as strategy
-import src.database.horizontal_bar as hdisplay
+import src.strategy.bar_graph as bardisplay
+import src.strategy.graph_strategy as strategy
+import src.strategy.horizontal_bar as hdisplay
 
 import src.strategy.stacked_bar as stackdisplay
 from src import model, uml_output as uml_out

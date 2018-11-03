@@ -1,45 +1,12 @@
 import plotly
 
 from src.database import sql
-
-
-# By Jake Reddock
-class ClassData:
-    """
-    Class Data object containing attributes
-    Author: Jake
-
-    >>> ClassData("TestClass",1,1).class_name
-    'TestClass'
-    >>> ClassData("TestClass",1,1).attribute_count
-    1
-    >>> ClassData("TestClass",1,1).method_count
-    1
-    """
-    def __init__(self, class_name, attribute_count, method_count):
-        self.class_name = class_name
-        self.attribute_count = attribute_count
-        self.method_count = method_count
-
+from src.adapter.adapter_factory import AdapterFactory
+from src.database.class_data import ClassData
 
 # By Jake Reddock
+
 class StatisticsCreator:
-    """
-    Statistics object containing attributes and functions
-    Author: Jake
-
-    >>> StatisticsCreator("DocTest").db.conn is not None
-    True
-    >>> statistics = StatisticsCreator("DocTest")
-    >>> statistics.create_tables()
-    >>> from src.model import ClassNode
-    >>> classnode = ClassNode("TestName")
-    >>> classnode.add_attribute("AttributeOne","+")
-    >>> classnode.add_function("MethodOne","ParameterOne","+")
-    >>> statistics.insert_class(classnode)
-    >>> statistics.get_class_data()[0].class_name
-    'TestName'
-    """
     def __init__(self, db_name):
         self.db = sql.database(db_name)
 
@@ -53,10 +20,11 @@ class StatisticsCreator:
 
     def insert_class(self, class_node):
         try:
-            self.db.query("INSERT INTO ClassData VALUES(null,'" +
-                          class_node.name + "'," +
-                          str(len(class_node.attributes)) + "," +
-                          str(len(class_node.functions)) + ");")
+            node_creator = AdapterFactory(class_node)
+            self.db.query("INSERT INTO ClassData VALUES(null, '{}', {}, {})".format(
+                          node_creator.get_class_name(),
+                          node_creator.get_class_attributes(),
+                          node_creator.get_class_functions()))
         except sql.SQLError as e:
             print(e)
 

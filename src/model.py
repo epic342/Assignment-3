@@ -42,6 +42,14 @@ class ClassNode:
     def add_super_class(self, super_class):
         self.super_classes.append(super_class)
 
+    def get_class_name(self):
+        return self.name
+
+    def get_class_attributes(self):
+        return self.attributes
+
+    def get_class_functions(self):
+        return self.functions
 
 class AttributeNode:
     """
