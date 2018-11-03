@@ -3,6 +3,11 @@ from shutil import copyfile
 from subprocess import call
 from tkinter import filedialog, Tk
 
+import src.database.bar_graph as bardisplay
+import src.database.graph_strategy as strategy
+import src.database.horizontal_bar as hdisplay
+
+import src.strategy.stacked_bar as stackdisplay
 from src import model, uml_output as uml_out
 from src.output import csv_plugin as csv
 from src.pickle_modules import PickleModules
@@ -19,7 +24,38 @@ class DataController:
     def show_statistics(self, args):
         if self.controller.statistics is not None:
             if self.controller.extracted_modules is not None:
-                self.controller.statistics.show_graph_data()
+                # self.controller.statistics.show_graph_data()
+                strategy.GraphManager(bardisplay.BarGraphCreator('tester')).make_graph(self.controller.statistics)
+                return True
+            else:
+                print("Please run the \"output_to_dot\" to command")
+                return False
+        else:
+            print(
+                "Statistics collecting is not enabled, "
+                "type \"enable_statistics\" to enable")
+            return False
+
+    def show_stacked_statistics(self, args):
+        if self.controller.statistics is not None:
+            if self.controller.extracted_modules is not None:
+                # self.controller.statistics.show_graph_data()
+                strategy.GraphManager(stackdisplay.StackedGraphCreator('tester')).make_graph(self.controller.statistics)
+                return True
+            else:
+                print("Please run the \"output_to_dot\" to command")
+                return False
+        else:
+            print(
+                "Statistics collecting is not enabled, "
+                "type \"enable_statistics\" to enable")
+            return False
+
+    def show_horizontal_statistics(self, args):
+        if self.controller.statistics is not None:
+            if self.controller.extracted_modules is not None:
+                # self.controller.statistics.show_graph_data()
+                strategy.GraphManager(hdisplay.HorizontalGraphCreator('tester')).make_graph(self.controller.statistics)
                 return True
             else:
                 print("Please run the \"output_to_dot\" to command")

@@ -95,9 +95,36 @@ class Controller(Cmd):
         """
         if self.controller.show_statistics(args):
             print("Now showing statistics.")
-            print("Creating graph, please wait...")
+            print("Creating bar graph, please wait...")
         else:
             print("Failed to show statistics.")
+
+    def do_show_stacked_statistics(self, args):
+        """
+        Show statistics about the analysed classes
+        Author: Jake Reddock
+        Syntax: show_statistics
+        Requires: enable_statistics, output_to_dot
+        """
+        if self.controller.show_stacked_statistics(args):
+            print("Now showing statistics.")
+            print("Creating stacked bar graph, please wait...")
+        else:
+            print("Failed to show statistics.")
+
+    def do_show_horizontal_statistics(self, args):
+        """
+        Show statistics about the analysed classes
+        Author: Jake Reddock
+        Syntax: show_statistics
+        Requires: enable_statistics, output_to_dot
+        """
+        if self.controller.show_horizontal_statistics(args):
+            print("Now showing statistics.")
+            print("Creating horizontal graph, please wait...")
+        else:
+            print("Failed to show statistics.")
+
 
     def do_set_input_file(self, args):
         """
