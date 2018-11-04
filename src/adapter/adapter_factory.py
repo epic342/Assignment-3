@@ -2,7 +2,6 @@ from src.database.class_data import ClassData
 
 
 class AdapterFactory(ClassData):
-
     def __init__(self, class_node):
         self.node_creator = class_node
 

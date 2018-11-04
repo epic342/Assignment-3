@@ -51,6 +51,7 @@ class ClassNode:
     def get_class_functions(self):
         return self.functions
 
+
 class AttributeNode:
     """
     Attribute object containing attribute name
