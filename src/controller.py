@@ -6,7 +6,6 @@ from tkinter import filedialog, Tk
 import src.strategy.bar_graph as bardisplay
 import src.strategy.graph_strategy as strategy
 import src.strategy.horizontal_bar as hdisplay
-
 import src.strategy.stacked_bar as stackdisplay
 from src import model, uml_output as uml_out
 from src.output import csv_plugin as csv
@@ -24,7 +23,6 @@ class DataController:
     def show_statistics(self, args):
         if self.controller.statistics is not None:
             if self.controller.extracted_modules is not None:
-                # self.controller.statistics.show_graph_data()
                 strategy.GraphManager(bardisplay.BarGraphCreator('tester')).make_graph(self.controller.statistics)
                 return True
             else:
@@ -39,7 +37,6 @@ class DataController:
     def show_stacked_statistics(self, args):
         if self.controller.statistics is not None:
             if self.controller.extracted_modules is not None:
-                # self.controller.statistics.show_graph_data()
                 strategy.GraphManager(stackdisplay.StackedGraphCreator('tester')).make_graph(self.controller.statistics)
                 return True
             else:
@@ -54,7 +51,6 @@ class DataController:
     def show_horizontal_statistics(self, args):
         if self.controller.statistics is not None:
             if self.controller.extracted_modules is not None:
-                # self.controller.statistics.show_graph_data()
                 strategy.GraphManager(hdisplay.HorizontalGraphCreator('tester')).make_graph(self.controller.statistics)
                 return True
             else:

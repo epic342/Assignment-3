@@ -2,7 +2,6 @@ import plotly
 
 from src.database import sql
 from src.database.class_data import ClassData
-
 from src.strategy.graph_strategy import AbstractGraphBuilder
 
 

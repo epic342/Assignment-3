@@ -1,10 +1,7 @@
-import plotly
-
-from src.database import sql
 from src.adapter.adapter_factory import AdapterFactory
+from src.database import sql
 from src.database.class_data import ClassData
 
-# By Jake Reddock
 
 class StatisticsCreator:
     def __init__(self, db_name):
@@ -22,9 +19,9 @@ class StatisticsCreator:
         try:
             node_creator = AdapterFactory(class_node)
             self.db.query("INSERT INTO ClassData VALUES(null, '{}', {}, {})".format(
-                          node_creator.get_class_name(),
-                          node_creator.get_class_attributes(),
-                          node_creator.get_class_functions()))
+                node_creator.get_class_name(),
+                node_creator.get_class_attributes(),
+                node_creator.get_class_functions()))
         except sql.SQLError as e:
             print(e)
 
@@ -45,33 +42,6 @@ class StatisticsCreator:
                     attribute_count,
                     method_count))
         return class_data_list
-
-    def show_graph_data(self):
-        class_names = []
-        class_attributes = []
-        class_methods = []
-        for class_data in self.get_class_data():
-            class_names.append(class_data.class_name)
-            class_attributes.append(class_data.attribute_count)
-            class_methods.append(class_data.method_count)
-
-        attribute_trace = plotly.graph_objs.Bar(
-            x=class_names,
-            y=class_attributes,
-            name='Attribute Count'
-        )
-
-        method_trace = plotly.graph_objs.Bar(
-            x=class_names,
-            y=class_methods,
-            name='Method Count'
-        )
-
-        data = [attribute_trace, method_trace]
-        layout = plotly.graph_objs.Layout(barmode='group')
-
-        fig = plotly.graph_objs.Figure(data=data, layout=layout)
-        plotly.offline.plot(fig, filename='../tmp/grouped-bar.html')
 
 
 if __name__ == '__main__':
